@@ -106,6 +106,39 @@ RSpec.describe VisualizeRuby::Builder do
       end
 
       it { VisualizeRuby::Graphviz.new(subject.build).to_graph(png: "spec/examples/base_methods.png") }
+
+      context "with single method" do
+        let(:ruby_code) {
+          <<-RUBY
+          def start
+            if hungry?
+              eat
+            else
+              work
+            end
+          end
+          RUBY
+        }
+
+        it "returns a graphs" do
+          expect(subject.build.map(&:to_hash)).to eq([
+                                                         {
+                                                             name:  "start",
+                                                             edges: [
+                                                                        [:hungry?, "true", "->", :eat],
+                                                                        [:hungry?, "false", "->", :work],
+                                                                    ],
+                                                             nodes: [
+                                                                        [:decision, :hungry?],
+                                                                        [:action, :eat],
+                                                                        [:action, :work]
+                                                                    ]
+                                                         }
+                                                     ])
+        end
+
+        it { VisualizeRuby::Graphviz.new(subject.build).to_graph(png: "spec/examples/base_method.png") }
+      end
     end
   end
 end

@@ -46,6 +46,7 @@ module VisualizeRuby
     end
 
     def bare_methods?(ruby_code)
+      ruby_code.ast.type == :def ||
       ruby_code.ast.type == :begin && ruby_code.ast.children.map(&:type).uniq == [:def]
     end
 
