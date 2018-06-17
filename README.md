@@ -1,8 +1,10 @@
 # VisualizeRuby
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/visualize_ruby`. To experiment with that code, run `bin/console` for an interactive prompt.
+Write a Ruby class and see method interactions. Works with procedural code and bare methods.</span>
+This is experimental project and does not support all types of code. 
+If you'd like it to support more types of code please pull request.
 
-TODO: Delete this and the text above, and describe your gem
+[Demo](https://visualize-ruby.herokuapp.com/)
 
 ## Installation
 
@@ -22,7 +24,20 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require "visualize_ruby"
+
+ruby_code = <<-RUBY
+  if hungry?
+    eat
+  else
+    work
+  end
+RUBY
+
+results = VisualizeRuby::Builder.new(ruby_code: ruby_code).build
+VisualizeRuby::Graphviz.new(*results).to_graph(png: "example.png")
+```
 
 ## Development
 
