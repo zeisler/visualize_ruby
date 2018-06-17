@@ -5,7 +5,7 @@ module VisualizeRuby
                 :node_b,
                 :dir
     def initialize(name: nil, nodes:, dir: :forward)
-      @name   = name
+      @name   = name.to_s if name
       @node_a = nodes[0]
       @node_b = nodes[1]
       @dir    = dir
@@ -24,6 +24,8 @@ module VisualizeRuby
       case dir
       when :forward
         "->"
+      when :none
+        "-"
       end
     end
 

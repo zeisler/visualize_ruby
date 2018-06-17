@@ -3,7 +3,7 @@ module VisualizeRuby
     attr_reader :name
     attr_accessor :type
     def initialize(name:, type: :action)
-      @name = name
+      @name = name.to_s
       @type = type
     end
 
