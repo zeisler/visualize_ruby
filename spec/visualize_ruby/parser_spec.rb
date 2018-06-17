@@ -146,12 +146,37 @@ RSpec.describe VisualizeRuby::Parser do
         elsif manner_of_payment_codes.include?(:exception)
           exception(:negative_mortgage_mop_code)
         else
-          "eligible"
+          "approved"
         end
           RUBY
         }
 
         it { VisualizeRuby::Graphviz.new(nodes, edges).to_graph(png: "spec/examples/complex_logic.png") }
+      end
+
+      context "with linked actions" do
+        let(:ruby_code) {
+          <<-RUBY
+        if project.done?
+          eat(:donuts)
+          clean(:kitchen)
+        end
+          RUBY
+        }
+
+        it "converts to nodes and edges" do
+          expect(nodes.map(&:to_a)).to eq([
+                                              [:decision, :project_done?],
+                                              [:action, :eat_donuts],
+                                              [:action, :clean_kitchen]
+                                          ])
+          expect(edges.map(&:to_a)).to eq([
+                                              [:project_done?, "true", "->", :eat_donuts],
+                                           [:eat_donuts, "->", :clean_kitchen]
+                                          ])
+        end
+
+        it { VisualizeRuby::Graphviz.new(nodes, edges).to_graph(png: "spec/examples/if_with_linked_actions.png") }
       end
     end
   end
