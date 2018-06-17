@@ -13,24 +13,25 @@ module VisualizeRuby
 
       if ruby_class.class?
         [build_from_class(ruby_class), { label: ruby_class.class_name }]
-      elsif ruby_code.ast.type == :begin && ruby_code.ast.children.map(&:type).uniq == [:def]
+      elsif bare_methods?(ruby_code)
         wrap_bare_methods(ruby_code)
       else
         Graph.new(ruby_code: @ruby_code)
       end
     end
 
+    private
+
     def build_from_class(ruby_class)
-      graphs = ruby_class.defs.map do |meth|
-        Graph.new(ruby_code: meth.body, name: meth.name)
-      end
+      graphs = build_graphs_by_method(ruby_class)
 
       graphs.each do |graph|
         graphs.each do |sub_graph|
           sub_graph.nodes.each do |node|
-            if node.name == graph.name
-              sub_graph.edges << Edge.new(nodes: [node, graph.nodes.first], dir: :none)
-            end
+            sub_graph.edges << Edge.new(
+                nodes: [node, graph.nodes.first],
+                dir:   :none
+            ) if node.name == graph.name
           end
         end
       end
@@ -38,7 +39,15 @@ module VisualizeRuby
       graphs
     end
 
-    private
+    def build_graphs_by_method(ruby_class)
+     ruby_class.defs.map do |meth|
+        Graph.new(ruby_code: meth.body, name: meth.name)
+      end
+    end
+
+    def bare_methods?(ruby_code)
+      ruby_code.ast.type == :begin && ruby_code.ast.children.map(&:type).uniq == [:def]
+    end
 
     def wrap_bare_methods(ruby_code)
       wrapped_ruby_code = <<~Ruby
