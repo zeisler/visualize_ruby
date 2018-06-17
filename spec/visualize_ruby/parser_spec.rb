@@ -2,6 +2,9 @@ RSpec.describe VisualizeRuby::Parser do
   subject {
     described_class.new(ruby_code).parse
   }
+  let(:graph) {
+    instance_double(VisualizeRuby::Graph, nodes: nodes, edges: edges, name: "something")
+  }
   let(:nodes) { subject.first }
   let(:edges) { subject.last }
 
@@ -23,7 +26,7 @@ RSpec.describe VisualizeRuby::Parser do
       expect(subject.flatten.map(&:class).uniq).to eq([VisualizeRuby::Node, VisualizeRuby::Edge])
     end
 
-    it { VisualizeRuby::Graphviz.new(nodes, edges).to_graph(png: "spec/examples/link_actions.png") }
+    it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/link_actions.png") }
   end
 
   context "condition" do
@@ -39,7 +42,7 @@ RSpec.describe VisualizeRuby::Parser do
         expect(edges.map(&:to_a)).to eq([[:person_hungry?, "OR", "->", :starving?]])
       end
 
-      it { VisualizeRuby::Graphviz.new(nodes, edges).to_graph(png: "spec/examples/or.png") }
+      it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/or.png") }
     end
 
     context "AND" do
@@ -54,7 +57,7 @@ RSpec.describe VisualizeRuby::Parser do
         expect(edges.map(&:to_a)).to eq([[:hungry?, "AND", "->", :starving?]])
       end
 
-      it { VisualizeRuby::Graphviz.new(nodes, edges).to_graph(png: "spec/examples/and.png") }
+      it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/and.png") }
     end
   end
 
@@ -74,7 +77,7 @@ RSpec.describe VisualizeRuby::Parser do
       expect(edges.map(&:to_a)).to eq([[:hungry?, "true", "->", :eat], [:hungry?, "false", "->", :sleep]])
     end
 
-    it { VisualizeRuby::Graphviz.new(nodes, edges).to_graph(png: "spec/examples/if_statement.png") }
+    it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/if_statement.png") }
 
     context "with condition" do
       let(:ruby_code) {
@@ -98,7 +101,7 @@ RSpec.describe VisualizeRuby::Parser do
                                         ])
       end
 
-      it { VisualizeRuby::Graphviz.new(nodes, edges).to_graph(png: "spec/examples/if_with_condition.png") }
+      it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/if_with_condition.png") }
     end
 
     context "with elsif" do
@@ -130,7 +133,7 @@ RSpec.describe VisualizeRuby::Parser do
                                         ])
       end
 
-      it { VisualizeRuby::Graphviz.new(nodes, edges).to_graph(png: "spec/examples/elsif.png") }
+      it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/elsif.png") }
 
       context "complex example" do
         let(:ruby_code) {
@@ -151,7 +154,7 @@ RSpec.describe VisualizeRuby::Parser do
           RUBY
         }
 
-        it { VisualizeRuby::Graphviz.new(nodes, edges).to_graph(png: "spec/examples/complex_logic.png") }
+        it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/complex_logic.png") }
       end
 
       context "with linked actions" do
@@ -176,7 +179,26 @@ RSpec.describe VisualizeRuby::Parser do
                                           ])
         end
 
-        it { VisualizeRuby::Graphviz.new(nodes, edges).to_graph(png: "spec/examples/if_with_linked_actions.png") }
+        it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/if_with_linked_actions.png") }
+      end
+    end
+
+    context "nodes types" do
+      ["true", "false", "1", "1+2"].each do |node|
+        context node do
+          let(:ruby_code) {
+            <<-RUBY
+          if #{node}
+            wow #{node}
+          end
+            RUBY
+          }
+
+          it do
+            expect(nodes.count).to eq(2)
+            VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/node_#{node}.png")
+          end
+        end
       end
     end
   end
