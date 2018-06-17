@@ -11,3 +11,5 @@
 .rspec_status
 .idea/*
 npm-debug.log
+*.gem
+Gemfile.lock
