@@ -12,7 +12,7 @@ module VisualizeRuby
     end
 
     def to_a
-      [type, to_sym]
+      [type, name.to_s]
     end
 
     def type_display

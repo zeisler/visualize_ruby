@@ -18,8 +18,8 @@ RSpec.describe VisualizeRuby::Parser do
     }
 
     it "converts to nodes and edges" do
-      expect(nodes.map(&:to_a)).to eq([[:action, :"eat(:breakfast)"], [:action, :"brush(:teeth)"], [:action, :"drive(:work)"]])
-      expect(edges.map(&:to_a)).to eq([[:"eat(:breakfast)", "->", :"brush(:teeth)"], [:"brush(:teeth)", "->", :"drive(:work)"]])
+      expect(nodes.map(&:to_a)).to eq([[:action, "eat(:breakfast)"], [:action, "brush(:teeth)"], [:action, "drive(:work)"]])
+      expect(edges.map(&:to_a)).to eq([["eat(:breakfast)", "->", "brush(:teeth)"], ["brush(:teeth)", "->", "drive(:work)"]])
     end
 
     it "returns [Array[VisualizeRuby::Node], Array[VisualizeRuby::Edge]" do
@@ -38,8 +38,8 @@ RSpec.describe VisualizeRuby::Parser do
       }
 
       it "converts to nodes and edges" do
-        expect(nodes.map(&:to_sym)).to eq([:"person.hungry?", :starving?])
-        expect(edges.map(&:to_a)).to eq([[:"person.hungry?", "OR", "->", :starving?]])
+        expect(nodes.map(&:to_a)).to eq([[:decision, "person.hungry?"], [:decision, "starving?"]])
+        expect(edges.map(&:to_a)).to eq([["person.hungry?", "OR", "->", "starving?"]])
       end
 
       it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/or.png") }
@@ -53,8 +53,8 @@ RSpec.describe VisualizeRuby::Parser do
       }
 
       it "converts to nodes and edges" do
-        expect(nodes.map(&:to_a)).to eq([[:decision, :hungry?], [:decision, :starving?]])
-        expect(edges.map(&:to_a)).to eq([[:hungry?, "AND", "->", :starving?]])
+        expect(nodes.map(&:to_a)).to eq([[:decision, "hungry?"], [:decision, "starving?"]])
+        expect(edges.map(&:to_a)).to eq([["hungry?", "AND", "->", "starving?"]])
       end
 
       it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/and.png") }
@@ -73,8 +73,8 @@ RSpec.describe VisualizeRuby::Parser do
     }
 
     it "converts to nodes and edges" do
-      expect(nodes.map(&:to_sym)).to eq([:hungry?, :eat, :sleep])
-      expect(edges.map(&:to_a)).to eq([[:hungry?, "true", "->", :eat], [:hungry?, "false", "->", :sleep]])
+      expect(nodes.map(&:to_a)).to eq([[:decision, "hungry?"], [:action, "eat"], [:action, "sleep"]])
+      expect(edges.map(&:to_a)).to eq([["hungry?", "true", "->", "eat"], ["hungry?", "false", "->", "sleep"]])
     end
 
     it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/if_statement.png") }
@@ -91,13 +91,18 @@ RSpec.describe VisualizeRuby::Parser do
       }
 
       it "converts to nodes and edges" do
-        expect(nodes.map(&:to_sym)).to eq([:hungry?, :alone?, :eat, :sleep])
+        expect(nodes.map(&:to_a)).to eq([
+                                            [:decision, "hungry?"],
+                                            [:decision, "alone?"],
+                                            [:action, "eat"],
+                                            [:action, "sleep"]
+                                        ])
         expect(edges.map(&:to_a)).to eq([
-                                            [:hungry?, "OR", "->", :alone?],
-                                            [:hungry?, "true", "->", :eat],
-                                            [:hungry?, "false", "->", :sleep],
-                                            [:alone?, "true", "->", :eat],
-                                            [:alone?, "false", "->", :sleep]
+                                            ["hungry?", "OR", "->", "alone?"],
+                                            ["hungry?", "true", "->", "eat"],
+                                            ["hungry?", "false", "->", "sleep"],
+                                            ["alone?", "true", "->", "eat"],
+                                            ["alone?", "false", "->", "sleep"]
                                         ])
       end
 
@@ -119,17 +124,17 @@ RSpec.describe VisualizeRuby::Parser do
 
       it "converts to nodes and edges" do
         expect(nodes.map(&:to_a)).to eq([
-                                            [:decision, :"project.done?"],
-                                            [:action, :go_on_vacation],
-                                            [:decision, :"project.blocked?"],
-                                            [:action, :"eat(:donuts)"],
-                                            [:action, :sleep]
+                                            [:decision, "project.done?"],
+                                            [:action, "go_on_vacation"],
+                                            [:decision, "project.blocked?"],
+                                            [:action, "eat(:donuts)"],
+                                            [:action, "sleep"]
                                         ])
         expect(edges.map(&:to_a)).to eq([
-                                            [:"project.done?", "true", "->", :go_on_vacation],
-                                            [:"project.done?", "false", "->", :"project.blocked?"],
-                                            [:"project.blocked?", "true", "->", :"eat(:donuts)"],
-                                            [:"project.blocked?", "false", "->", :sleep]
+                                            ["project.done?", "true", "->", "go_on_vacation"],
+                                            ["project.done?", "false", "->", "project.blocked?"],
+                                            ["project.blocked?", "true", "->", "eat(:donuts)"],
+                                            ["project.blocked?", "false", "->", "sleep"]
                                         ])
       end
 
@@ -169,13 +174,13 @@ RSpec.describe VisualizeRuby::Parser do
 
         it "converts to nodes and edges" do
           expect(nodes.map(&:to_a)).to eq([
-                                              [:decision, :"project.done?"],
-                                              [:action, :"eat(:donuts)"],
-                                              [:action, :"clean(:kitchen)"]
+                                              [:decision, "project.done?"],
+                                              [:action, "eat(:donuts)"],
+                                              [:action, "clean(:kitchen)"]
                                           ])
           expect(edges.map(&:to_a)).to eq([
-                                              [:"project.done?", "true", "->", :"eat(:donuts)"],
-                                              [:"eat(:donuts)", "->", :"clean(:kitchen)"]
+                                              ["project.done?", "true", "->", "eat(:donuts)"],
+                                              ["eat(:donuts)", "->", "clean(:kitchen)"]
                                           ])
         end
 
@@ -211,10 +216,45 @@ RSpec.describe VisualizeRuby::Parser do
     }
 
     it "converts to nodes and edges" do
-      expect(nodes.map(&:to_a)).to eq([[:action, :"@name_=_name"]])
+      expect(nodes.map(&:to_a)).to eq([[:action, "@name = name"]])
       expect(edges.map(&:to_a)).to eq([])
     end
 
     it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/variable_assignment.png") }
+
+    context "before an if statement" do
+      let(:ruby_code) {
+        <<-RUBY
+        @name = "Dustin"
+        if @name == "Jack"
+          jump
+        elsif @name == "Dustin"
+          hike
+        else
+          walk  
+        end
+        RUBY
+      }
+
+      it "converts to nodes and edges" do
+        expect(nodes.map(&:to_a)).to eq([
+                                            [:action, "@name = \"Dustin\""],
+                                            [:decision, "@name == \"Jack\""],
+                                            [:action, "jump"],
+                                            [:decision, "@name == \"Dustin\""],
+                                            [:action, "hike"],
+                                            [:action, "walk"],
+                                        ])
+        expect(edges.map(&:to_a)).to eq([
+                                                     ["@name = \"Dustin\"", "->", "@name == \"Jack\""],
+                                                     ["@name == \"Jack\"", "true", "->", "jump"],
+                                                     ["@name == \"Jack\"", "false", "->", "@name == \"Dustin\""],
+                                                     ["@name == \"Dustin\"", "true", "->", "hike"],
+                                                     ["@name == \"Dustin\"", "false", "->", "walk"],
+                                                 ])
+      end
+
+      it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/variable_assignment_and_if.png") }
+    end
   end
 end

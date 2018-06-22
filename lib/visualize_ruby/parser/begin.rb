@@ -8,11 +8,14 @@ module VisualizeRuby
       # @return [Array<VisualizeRuby::Node>, Array<VisualizeRuby::Edge>]
       def parse
         edges     = []
+        nodes = []
         last_node = nil
-        nodes     = @ast.children.to_a.compact.reverse.map do |a|
-          node = Node.new(name: AstHelper.new(a).description, type: :action)
-          edges << Edge.new(nodes: [node, last_node]) if last_node
-          last_node = node
+        @ast.children.to_a.compact.reverse.each do |a|
+          _nodes, _edges = Parser.new(ast: a).parse
+          edges.concat(_edges.reverse)
+          nodes.concat(_nodes.reverse)
+          edges << Edge.new(nodes: [_nodes.first, last_node]) if last_node
+          last_node = _nodes.first
         end
 
         return nodes.reverse, edges.reverse

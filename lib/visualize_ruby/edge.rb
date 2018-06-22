@@ -13,10 +13,10 @@ module VisualizeRuby
 
     def to_a
       [
-          node_a.to_sym,
+          node_a.name.to_s,
           name,
           direction_symbol,
-          node_b.to_sym,
+          node_b.name.to_s,
       ].compact
     end
 

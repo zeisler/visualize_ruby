@@ -42,20 +42,20 @@ RSpec.describe VisualizeRuby::Builder do
                                                        {
                                                            name:  "start",
                                                            edges: [
-                                                                      [:hungry?, "true", "->", :eat],
-                                                                      [:hungry?, "false", "->", :work],
-                                                                      [:hungry?, "-", :"stomach.empty?"]
+                                                                      ["hungry?", "true", "->", "eat"],
+                                                                      ["hungry?", "false", "->", "work"],
+                                                                      ["hungry?", "-", "stomach.empty?"]
                                                                   ],
                                                            nodes: [
-                                                                      [:decision, :hungry?],
-                                                                      [:action, :eat],
-                                                                      [:action, :work]
+                                                                      [:decision, "hungry?"],
+                                                                      [:action, "eat"],
+                                                                      [:action, "work"]
                                                                   ]
                                                        }, {
                                                            name:  "hungry?",
                                                            edges: [],
                                                            nodes: [
-                                                                      [:action,  :"stomach.empty?"]
+                                                                      [:action,  "stomach.empty?"]
                                                                   ]
                                                        }
                                                    ])
@@ -86,20 +86,20 @@ RSpec.describe VisualizeRuby::Builder do
                                                              {
                                                                  name:  "start",
                                                                  edges: [
-                                                                            [:hungry?, "true", "->", :eat],
-                                                                            [:hungry?, "false", "->", :work],
-                                                                            [:hungry?, "-",  :"stomach.empty?"]
+                                                                            ["hungry?", "true", "->", "eat"],
+                                                                            ["hungry?", "false", "->", "work"],
+                                                                            ["hungry?", "-",  "stomach.empty?"]
                                                                         ],
                                                                  nodes: [
-                                                                            [:decision, :hungry?],
-                                                                            [:action, :eat],
-                                                                            [:action, :work]
+                                                                            [:decision, "hungry?"],
+                                                                            [:action, "eat"],
+                                                                            [:action, "work"]
                                                                         ]
                                                              }, {
                                                                  name:  "hungry?",
                                                                  edges: [],
                                                                  nodes: [
-                                                                            [:action,  :"stomach.empty?"]
+                                                                            [:action,  "stomach.empty?"]
                                                                         ]
                                                              }
                                                          ])
@@ -125,13 +125,13 @@ RSpec.describe VisualizeRuby::Builder do
                                                          {
                                                              name:  "start",
                                                              edges: [
-                                                                        [:hungry?, "true", "->", :eat],
-                                                                        [:hungry?, "false", "->", :work],
+                                                                        ["hungry?", "true", "->", "eat"],
+                                                                        ["hungry?", "false", "->", "work"],
                                                                     ],
                                                              nodes: [
-                                                                        [:decision, :hungry?],
-                                                                        [:action, :eat],
-                                                                        [:action, :work]
+                                                                        [:decision, "hungry?"],
+                                                                        [:action, "eat"],
+                                                                        [:action, "work"]
                                                                     ]
                                                          }
                                                      ])
