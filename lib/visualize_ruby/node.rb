@@ -1,10 +1,12 @@
 module VisualizeRuby
   class Node
-    attr_reader :name
+    attr_reader :name, :style
     attr_accessor :type
-    def initialize(name:, type: :action)
-      @name = name.to_s
-      @type = type
+
+    def initialize(name:, type: :action, style: :rounded)
+      @name  = name.to_s
+      @type  = type
+      @style = style
     end
 
     def to_sym

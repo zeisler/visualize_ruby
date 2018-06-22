@@ -37,7 +37,7 @@ module VisualizeRuby
           g_graph.add_edges(
               nodes[edge.node_a.name],
               nodes[edge.node_b.name],
-              **compact({ label: edge.name, dir: edge.dir })
+              **compact({ label: edge.name, dir: edge.dir, style: edge.style })
           )
         end
       end
@@ -46,13 +46,17 @@ module VisualizeRuby
     def create_sub_graph(g, graph, index)
       g.add_graph(
           "cluster#{index}",
-          **compact({ label: graph.name })
+          **compact({ label: graph.name, style: graphs.count == 1 ? :invis : :dotted })
       )
     end
 
     def create_nodes(graph, sub_graph)
       graph.nodes.each do |node|
-        nodes[node.name] = sub_graph.add_node(node.name, shape: node.shape)
+        nodes[node.name] = sub_graph.add_node(
+            node.name,
+            shape: node.shape,
+            style: node.style
+        )
       end
     end
 

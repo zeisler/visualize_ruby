@@ -3,12 +3,15 @@ module VisualizeRuby
     attr_reader :name,
                 :node_a,
                 :node_b,
-                :dir
-    def initialize(name: nil, nodes:, dir: :forward)
+                :dir,
+                :style
+
+    def initialize(name: nil, nodes:, dir: :forward, style: :solid)
       @name   = name.to_s if name
       @node_a = nodes[0]
       @node_b = nodes[1]
       @dir    = dir
+      @style  = style
     end
 
     def to_a

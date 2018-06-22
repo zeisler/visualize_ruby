@@ -30,7 +30,8 @@ module VisualizeRuby
           sub_graph.nodes.each do |node|
             sub_graph.edges << Edge.new(
                 nodes: [node, graph.nodes.first],
-                dir:   :none
+                dir:   :none,
+                style: :dashed
             ) if node.name == graph.name
           end
         end

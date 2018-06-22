@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.5.0 - 2018-06-22
+### Enhancement
+* Change some visual display for flow charts.
+
 ## 0.4.0 - 2018-06-22
 
 ### Enhancement
