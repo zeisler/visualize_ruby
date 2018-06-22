@@ -10,22 +10,58 @@ module VisualizeRuby
     end
 
     def to_graph(type: :digraph, **output)
-      g          = GraphViz.new(:G, type: type, label: label)
-      nodes      = {}
-      sub_graphs = graphs.reverse.map.with_index do |graph, index|
-        sub_graph = g.add_graph("cluster#{index}", **{ label: graph.name }.reject { |_, v| v.nil? })
-        graph.nodes.each do |node|
-          nodes[node.name] = sub_graph.add_node(node.name, shape: node.shape)
-        end
+      g          = main_graph(type)
+      sub_graphs = sub_graphs(g)
+
+      create_edges(sub_graphs)
+      g.output(output)
+    end
+
+    private
+
+    def sub_graphs(g)
+      graphs.reverse.map.with_index do |graph, index|
+        sub_graph = create_sub_graph(g, graph, index)
+        create_nodes(graph, sub_graph)
         [graph, sub_graph]
       end
+    end
 
+    def nodes
+      @nodes ||= {}
+    end
+
+    def create_edges(sub_graphs)
       sub_graphs.each do |r_graph, g_graph|
         r_graph.edges.each do |edge|
-          g_graph.add_edges(nodes[edge.node_a.name], nodes[edge.node_b.name], **{ label: edge.name, dir: edge.dir }.reject { |_, v| v.nil? })
+          g_graph.add_edges(
+              nodes[edge.node_a.name],
+              nodes[edge.node_b.name],
+              **compact({ label: edge.name, dir: edge.dir })
+          )
         end
       end
-      g.output(output)
+    end
+
+    def create_sub_graph(g, graph, index)
+      g.add_graph(
+          "cluster#{index}",
+          **compact({ label: graph.name })
+      )
+    end
+
+    def create_nodes(graph, sub_graph)
+      graph.nodes.each do |node|
+        nodes[node.name] = sub_graph.add_node(node.name, shape: node.shape)
+      end
+    end
+
+    def main_graph(type)
+      GraphViz.new(:G, type: type, label: label)
+    end
+
+    def compact(hash)
+      hash.reject { |_, v| v.nil? }
     end
   end
 end
