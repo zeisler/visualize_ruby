@@ -44,7 +44,7 @@ RSpec.describe VisualizeRuby::Builder do
                                                            edges: [
                                                                       [:hungry?, "true", "->", :eat],
                                                                       [:hungry?, "false", "->", :work],
-                                                                      [:hungry?, "-", :stomach_empty?]
+                                                                      [:hungry?, "-", :"stomach.empty?"]
                                                                   ],
                                                            nodes: [
                                                                       [:decision, :hungry?],
@@ -55,7 +55,7 @@ RSpec.describe VisualizeRuby::Builder do
                                                            name:  "hungry?",
                                                            edges: [],
                                                            nodes: [
-                                                                      [:action, :stomach_empty?]
+                                                                      [:action,  :"stomach.empty?"]
                                                                   ]
                                                        }
                                                    ])
@@ -88,7 +88,7 @@ RSpec.describe VisualizeRuby::Builder do
                                                                  edges: [
                                                                             [:hungry?, "true", "->", :eat],
                                                                             [:hungry?, "false", "->", :work],
-                                                                            [:hungry?, "-", :stomach_empty?]
+                                                                            [:hungry?, "-",  :"stomach.empty?"]
                                                                         ],
                                                                  nodes: [
                                                                             [:decision, :hungry?],
@@ -99,7 +99,7 @@ RSpec.describe VisualizeRuby::Builder do
                                                                  name:  "hungry?",
                                                                  edges: [],
                                                                  nodes: [
-                                                                            [:action, :stomach_empty?]
+                                                                            [:action,  :"stomach.empty?"]
                                                                         ]
                                                              }
                                                          ])

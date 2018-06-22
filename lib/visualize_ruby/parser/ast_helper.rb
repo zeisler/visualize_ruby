@@ -6,21 +6,7 @@ module VisualizeRuby
       end
 
       def description(ast: @ast)
-        case ast
-        when Symbol, String
-          ast
-        when NilClass
-          nil
-
-        else
-          ast.children.flat_map do |c|
-            description(ast: c)
-          end.reject do |c|
-            c.nil? || c == :""
-          end.join(" ")
-        end
-      rescue NoMethodError
-        ast
+        Unparser.unparse(ast)
       end
     end
   end
