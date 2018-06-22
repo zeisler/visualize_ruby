@@ -9,6 +9,7 @@ require_relative "parser/if"
 require_relative "parser/type"
 require_relative "parser/true"
 require_relative "parser/false"
+require_relative "parser/case"
 
 module VisualizeRuby
   class Parser

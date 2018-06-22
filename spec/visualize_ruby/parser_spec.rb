@@ -257,4 +257,38 @@ RSpec.describe VisualizeRuby::Parser do
       it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/variable_assignment_and_if.png") }
     end
   end
+
+  context "case statement" do
+    let(:ruby_code) {
+      <<-RUBY
+        case @name
+        when "Tom"
+          run
+        when "Sam"
+          hop
+          flop
+        else
+          swim
+        end
+      RUBY
+    }
+
+    it "converts to nodes and edges" do
+      expect(nodes.map(&:to_a)).to eq([
+                                          [:decision, "@name"],
+                                          [:action, "run"],
+                                          [:action, "hop"],
+                                          [:action, "flop"],
+                                          [:action, "swim"]
+                                      ])
+      expect(edges.map(&:to_a)).to eq([
+                                          ["@name", "\"Tom\"", "->", "run"],
+                                          ["@name", "\"Sam\"", "->", "hop"],
+                                          ["hop", "->", "flop"],
+                                          ["@name", "else", "->", "swim"]
+                                      ])
+    end
+
+    it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/case_statement.png") }
+  end
 end
