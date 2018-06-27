@@ -1,4 +1,5 @@
 require "parser/current"
+require_relative "parser/base"
 require_relative "parser/or"
 require_relative "parser/and"
 require_relative "parser/ast_helper"
@@ -10,6 +11,7 @@ require_relative "parser/type"
 require_relative "parser/true"
 require_relative "parser/false"
 require_relative "parser/case"
+require_relative "parser/block"
 
 module VisualizeRuby
   class Parser

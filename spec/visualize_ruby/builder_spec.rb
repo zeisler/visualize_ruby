@@ -61,7 +61,7 @@ RSpec.describe VisualizeRuby::Builder do
                                                    ])
       end
 
-      it { VisualizeRuby::Graphviz.new(*subject.build).to_graph(png: "spec/examples/ruby_class.png") }
+      it { VisualizeRuby::Graphviz.new(*subject.build).to_graph(path: "spec/examples/ruby_class.png") }
     end
 
     context "when given naked methods" do
@@ -105,7 +105,7 @@ RSpec.describe VisualizeRuby::Builder do
                                                          ])
       end
 
-      it { VisualizeRuby::Graphviz.new(subject.build).to_graph(png: "spec/examples/base_methods.png") }
+      it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/base_methods.png") }
 
       context "with single method" do
         let(:ruby_code) {
@@ -137,7 +137,7 @@ RSpec.describe VisualizeRuby::Builder do
                                                      ])
         end
 
-        it { VisualizeRuby::Graphviz.new(subject.build).to_graph(png: "spec/examples/base_method.png") }
+        it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/base_method.png") }
       end
     end
   end

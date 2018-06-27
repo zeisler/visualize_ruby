@@ -6,6 +6,7 @@ module VisualizeRuby
       end
 
       def description(ast: @ast)
+        return ast if ast.is_a?(Symbol)
         Unparser.unparse(ast)
       end
     end

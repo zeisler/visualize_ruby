@@ -4,14 +4,16 @@ module VisualizeRuby
                 :node_a,
                 :node_b,
                 :dir,
-                :style
+                :style,
+                :color
 
-    def initialize(name: nil, nodes:, dir: :forward, style: :solid)
+    def initialize(name: nil, nodes:, dir: :forward, style: :solid, color: nil)
       @name   = name.to_s if name
       @node_a = nodes[0]
       @node_b = nodes[1]
       @dir    = dir
       @style  = style
+      @color  = color
     end
 
     def to_a

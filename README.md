@@ -36,7 +36,7 @@ ruby_code = <<-RUBY
 RUBY
 
 results = VisualizeRuby::Builder.new(ruby_code: ruby_code).build
-VisualizeRuby::Graphviz.new(*results).to_graph(png: "example.png")
+VisualizeRuby::Graphviz.new(*results).to_graph(path: "example.png")
 ```
 
 ## Development

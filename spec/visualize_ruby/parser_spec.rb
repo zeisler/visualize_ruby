@@ -26,7 +26,7 @@ RSpec.describe VisualizeRuby::Parser do
       expect(subject.flatten.map(&:class).uniq).to eq([VisualizeRuby::Node, VisualizeRuby::Edge])
     end
 
-    it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/link_actions.png") }
+    it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/link_actions.png") }
   end
 
   context "condition" do
@@ -42,7 +42,7 @@ RSpec.describe VisualizeRuby::Parser do
         expect(edges.map(&:to_a)).to eq([["person.hungry?", "OR", "->", "starving?"]])
       end
 
-      it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/or.png") }
+      it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/or.png") }
     end
 
     context "AND" do
@@ -57,7 +57,7 @@ RSpec.describe VisualizeRuby::Parser do
         expect(edges.map(&:to_a)).to eq([["hungry?", "AND", "->", "starving?"]])
       end
 
-      it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/and.png") }
+      it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/and.png") }
     end
   end
 
@@ -77,7 +77,7 @@ RSpec.describe VisualizeRuby::Parser do
       expect(edges.map(&:to_a)).to eq([["hungry?", "true", "->", "eat"], ["hungry?", "false", "->", "sleep"]])
     end
 
-    it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/if_statement.png") }
+    it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/if_statement.png") }
 
     context "with condition" do
       let(:ruby_code) {
@@ -106,7 +106,7 @@ RSpec.describe VisualizeRuby::Parser do
                                         ])
       end
 
-      it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/if_with_condition.png") }
+      it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/if_with_condition.png") }
     end
 
     context "with elsif" do
@@ -138,7 +138,7 @@ RSpec.describe VisualizeRuby::Parser do
                                         ])
       end
 
-      it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/elsif.png") }
+      it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/elsif.png") }
 
       context "complex example" do
         let(:ruby_code) {
@@ -159,7 +159,7 @@ RSpec.describe VisualizeRuby::Parser do
           RUBY
         }
 
-        it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/complex_logic.png") }
+        it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/complex_logic.png") }
       end
 
       context "with linked actions" do
@@ -184,7 +184,7 @@ RSpec.describe VisualizeRuby::Parser do
                                           ])
         end
 
-        it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/if_with_linked_actions.png") }
+        it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/if_with_linked_actions.png") }
       end
     end
 
@@ -201,7 +201,7 @@ RSpec.describe VisualizeRuby::Parser do
 
           it do
             expect(nodes.count).to eq(2)
-            VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/node_#{node}.png")
+            VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/node_#{node}.png")
           end
         end
       end
@@ -220,7 +220,7 @@ RSpec.describe VisualizeRuby::Parser do
       expect(edges.map(&:to_a)).to eq([])
     end
 
-    it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/variable_assignment.png") }
+    it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/variable_assignment.png") }
 
     context "before an if statement" do
       let(:ruby_code) {
@@ -254,7 +254,7 @@ RSpec.describe VisualizeRuby::Parser do
                                                  ])
       end
 
-      it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/variable_assignment_and_if.png") }
+      it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/variable_assignment_and_if.png") }
     end
   end
 
@@ -289,6 +289,6 @@ RSpec.describe VisualizeRuby::Parser do
                                       ])
     end
 
-    it { VisualizeRuby::Graphviz.new(graph).to_graph(png: "spec/examples/case_statement.png") }
+    it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/case_statement.png") }
   end
 end

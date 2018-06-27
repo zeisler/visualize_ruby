@@ -3,7 +3,7 @@ module VisualizeRuby
     attr_reader :name, :nodes, :edges
 
     def initialize(ruby_code:, name: nil)
-      @name          = name.to_s
+      @name          = name.to_s if name
       @nodes, @edges = Parser.new(ruby_code).parse
     end
 

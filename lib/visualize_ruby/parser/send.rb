@@ -1,10 +1,6 @@
 module VisualizeRuby
   class Parser
-    class Send
-      def initialize(ast)
-        @ast = ast
-      end
-
+    class Send < Base
       # @return [Array<VisualizeRuby::Node>, Array<VisualizeRuby::Edge>]
       def parse
         return [Node.new(name: AstHelper.new(@ast).description, type: :action)], []

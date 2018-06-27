@@ -1,10 +1,6 @@
 module VisualizeRuby
   class Parser
-    class Case
-      def initialize(ast)
-        @ast = ast
-      end
-
+    class Case < Base
       # @return [Array<VisualizeRuby::Node>, Array<VisualizeRuby::Edge>]
       def parse
         condition, *_whens, _else = @ast.children
@@ -22,14 +18,6 @@ module VisualizeRuby
         nodes << _else_node
         edges << _else_edge
         return nodes, edges
-      end
-
-      def nodes
-        @nodes ||= []
-      end
-
-      def edges
-        @edges ||= []
       end
     end
   end

@@ -1,14 +1,8 @@
 module VisualizeRuby
   class Parser
-    class Begin
-      def initialize(ast)
-        @ast = ast
-      end
-
+    class Begin < Base
       # @return [Array<VisualizeRuby::Node>, Array<VisualizeRuby::Edge>]
       def parse
-        edges     = []
-        nodes = []
         last_node = nil
         @ast.children.to_a.compact.reverse.each do |a|
           _nodes, _edges = Parser.new(ast: a).parse

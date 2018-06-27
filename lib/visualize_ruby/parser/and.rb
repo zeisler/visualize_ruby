@@ -1,10 +1,6 @@
 module VisualizeRuby
   class Parser
-    class And
-      def initialize(ast)
-        @ast = ast
-      end
-
+    class And < Base
       # @return [Array<VisualizeRuby::Node>, Array<VisualizeRuby::Edge>]
       def parse
         last_node = nil

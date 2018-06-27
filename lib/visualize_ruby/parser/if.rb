@@ -1,10 +1,6 @@
 module VisualizeRuby
   class Parser
-    class If
-      def initialize(ast)
-        @ast = ast
-      end
-
+    class If < Base
       # @return [Array<VisualizeRuby::Node>, Array<VisualizeRuby::Edge>]
       def parse
         break_ast
@@ -43,14 +39,6 @@ module VisualizeRuby
 
       def break_ast
         @condition, @on_true, @on_false = @ast.children.to_a
-      end
-
-      def nodes
-        @nodes ||= []
-      end
-
-      def edges
-        @edges ||= []
       end
     end
   end

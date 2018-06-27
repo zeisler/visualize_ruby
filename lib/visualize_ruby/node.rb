@@ -23,6 +23,8 @@ module VisualizeRuby
         "<>"
       when :action
         "[]"
+      when :argument
+        "[>"
       end
     end
 
@@ -32,6 +34,8 @@ module VisualizeRuby
         :diamond
       when :action
         :ellipse
+      when :argument
+        :box
       end
     end
 
