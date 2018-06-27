@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.6.0 - 2018-06-27
+### Enhancement
+* Visualize Enumerable looping
+* Display nodes for block arguments
+
 ## 0.5.0 - 2018-06-22
 ### Enhancement
 * Change some visual display for flow charts.
