@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.8.0 - 2018-07-17
+### Enhancement
+* Better handle conditions outside of if statements.
+
 ## 0.7.0 - 2018-07-17
 ### Fix
 * Ruby types like Hash and Array causing error. Now render as code.
