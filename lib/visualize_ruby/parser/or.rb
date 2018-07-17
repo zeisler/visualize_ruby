@@ -1,15 +1,14 @@
 module VisualizeRuby
   class Parser
     class Or < Base
-
+      include Conditions
       # @return [Array<VisualizeRuby::Node>, Array<VisualizeRuby::Edge>]
       def parse
         last_node = nil
         @ast.children.reverse.map do |c|
-          node = Node.new(name: AstHelper.new(c).description, type: :decision)
+          node = set_conditions(c).first
           edges << Edge.new(name: "OR", nodes: [node, last_node]) if last_node
           last_node = node
-          nodes << node
         end
         return nodes.reverse, edges
       end

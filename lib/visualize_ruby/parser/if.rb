@@ -1,6 +1,7 @@
 module VisualizeRuby
   class Parser
     class If < Base
+      include Conditions
       # @return [Array<VisualizeRuby::Node>, Array<VisualizeRuby::Edge>]
       def parse
         break_ast
@@ -26,14 +27,6 @@ module VisualizeRuby
       end
 
       private
-
-      def set_conditions(condition)
-        condition_nodes, condition_edges = Parser.new(ast: condition).parse
-        condition_nodes.first.type       = :decision
-        nodes.concat(condition_nodes)
-        edges.concat(condition_edges)
-        condition_nodes
-      end
 
       attr_reader :condition, :on_true, :on_false
 

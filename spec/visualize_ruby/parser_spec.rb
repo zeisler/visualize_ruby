@@ -315,4 +315,17 @@ RSpec.describe VisualizeRuby::Parser do
       expect(nodes.map(&:to_a)).to eq([[:action, "{ key: :value }"]])
     end
   end
+
+  context "and" do
+    let(:ruby_code) {
+      <<-RUBY
+      @name != "Aged Brie" and @name != "Backstage passes to a TAFKAL80ETC concert"
+      RUBY
+    }
+
+    it "converts to nodes and edges" do
+      expect(nodes.map(&:to_a)).to eq([[:decision, "@name != \"Aged Brie\""], [:decision, "@name != \"Backstage passes to a TAFKAL80ETC concert\""]])
+      expect(edges.map(&:to_a)).to eq([["@name != \"Aged Brie\"", "AND", "->", "@name != \"Backstage passes to a TAFKAL80ETC concert\""]])
+    end
+  end
 end

@@ -1,4 +1,5 @@
 require "parser/current"
+require_relative "parser/conditions"
 require_relative "parser/base"
 require_relative "parser/or"
 require_relative "parser/and"
