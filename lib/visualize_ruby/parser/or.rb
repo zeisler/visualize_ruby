@@ -10,8 +10,8 @@ module VisualizeRuby
           edges << Edge.new(name: "OR", nodes: [node, last_node]) if last_node
           last_node = node
           nodes << node
-        end.reverse
-        return nodes, edges
+        end
+        return nodes.reverse, edges
       end
     end
   end

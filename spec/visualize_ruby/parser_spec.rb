@@ -246,12 +246,12 @@ RSpec.describe VisualizeRuby::Parser do
                                             [:action, "walk"],
                                         ])
         expect(edges.map(&:to_a)).to eq([
-                                                     ["@name = \"Dustin\"", "->", "@name == \"Jack\""],
-                                                     ["@name == \"Jack\"", "true", "->", "jump"],
-                                                     ["@name == \"Jack\"", "false", "->", "@name == \"Dustin\""],
-                                                     ["@name == \"Dustin\"", "true", "->", "hike"],
-                                                     ["@name == \"Dustin\"", "false", "->", "walk"],
-                                                 ])
+                                            ["@name = \"Dustin\"", "->", "@name == \"Jack\""],
+                                            ["@name == \"Jack\"", "true", "->", "jump"],
+                                            ["@name == \"Jack\"", "false", "->", "@name == \"Dustin\""],
+                                            ["@name == \"Dustin\"", "true", "->", "hike"],
+                                            ["@name == \"Dustin\"", "false", "->", "walk"],
+                                        ])
       end
 
       it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/variable_assignment_and_if.png") }
@@ -290,5 +290,29 @@ RSpec.describe VisualizeRuby::Parser do
     end
 
     it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/case_statement.png") }
+  end
+
+  context "array" do
+    let(:ruby_code) {
+      <<-RUBY
+      [1,2,3,4,5]
+      RUBY
+    }
+
+    it "converts to nodes and edges" do
+      expect(nodes.map(&:to_a)).to eq([[:action, "[1, 2, 3, 4, 5]"]])
+    end
+  end
+
+  context "hash" do
+    let(:ruby_code) {
+      <<-RUBY
+      {key: :value}
+      RUBY
+    }
+
+    it "converts to nodes and edges" do
+      expect(nodes.map(&:to_a)).to eq([[:action, "{ key: :value }"]])
+    end
   end
 end

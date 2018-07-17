@@ -39,7 +39,7 @@ module VisualizeRuby
     private
 
     def parse_by_type
-      Parser.const_get(ast.type.to_s.capitalize).new(ast).parse
+      Parser.const_get(ast.type.to_s.capitalize, false).new(ast).parse
     rescue NameError
       Str.new(ast).parse
     end
