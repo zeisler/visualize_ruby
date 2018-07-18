@@ -43,6 +43,16 @@ module VisualizeRuby
       "#<VisualizeRuby::Node #{type_display} #{name}>"
     end
 
+    def ==(other)
+      other.class == self.class && other.hash == self.hash
+    end
+
+    alias_method :eql?, :==
+
+    def hash
+      [type, name, style].hash
+    end
+
     alias_method :to_s, :inspect
   end
 end

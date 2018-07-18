@@ -3,12 +3,14 @@ module VisualizeRuby
     attr_reader :name,
                 :node_a,
                 :node_b,
+                :nodes,
                 :dir,
                 :style,
                 :color
 
     def initialize(name: nil, nodes:, dir: :forward, style: :solid, color: nil)
       @name   = name.to_s if name
+      @nodes  = nodes
       @node_a = nodes[0]
       @node_b = nodes[1]
       @dir    = dir
@@ -36,6 +38,16 @@ module VisualizeRuby
 
     def inspect
       "#<VisualizeRuby::Edge #{to_a.join(" ")}>"
+    end
+
+    def ==(other)
+      other.class == self.class && other.hash == self.hash
+    end
+
+    alias_method :eql?, :==
+
+    def hash
+      [dir, name, nodes.map(&:hash), style, color].hash
     end
 
     alias_method :to_s, :inspect

@@ -16,7 +16,7 @@ module VisualizeRuby
       elsif bare_methods?(ruby_code)
         wrap_bare_methods(ruby_code)
       else
-        Graph.new(ruby_code: @ruby_code)
+        Graph.new(ruby_code: @ruby_code).uniq_elements!
       end
     end
 
@@ -42,7 +42,7 @@ module VisualizeRuby
 
     def build_graphs_by_method(ruby_class)
      ruby_class.defs.map do |meth|
-        Graph.new(ruby_code: meth.body, name: meth.name)
+        Graph.new(ruby_code: meth.body, name: meth.name).uniq_elements!
       end
     end
 

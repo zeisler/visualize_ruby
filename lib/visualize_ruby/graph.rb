@@ -14,5 +14,11 @@ module VisualizeRuby
           nodes: nodes.map(&:to_a),
       }
     end
+
+    def uniq_elements!
+      @edges = edges.uniq
+      @nodes = nodes.uniq
+      self
+    end
   end
 end
