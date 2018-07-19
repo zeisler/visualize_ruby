@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.9.0 - 2018-07-17
+### Enhancement
+* Properly render Messy code, Glided Rose as example https://github.com/amckinnell/Gilded-Rose-Ruby/blob/master/lib/gilded_rose.rb
+* Conditions with no else statement have an edge to an END node.
+* All nodes have unique IDs based on source location. 
+Nodes can be merged based on there label with VisualizeRuby::Graphviz(graphs, label, unique_nodes: false)
+
 ## 0.8.0 - 2018-07-17
 ### Enhancement
 * Better handle conditions outside of if statements.
