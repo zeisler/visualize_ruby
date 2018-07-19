@@ -17,18 +17,18 @@ module VisualizeRuby
       private
 
       def yield_block(action, item, on_object)
-        nodes << on_object_node = Node.new(name: AstHelper.new(on_object).description)
-        nodes << item_node = Node.new(name: AstHelper.new(item).description, type: :argument)
-        nodes << action_node = Node.new(name: AstHelper.new(action).description)
+        nodes << on_object_node = Node.new(ast: on_object)
+        nodes << item_node = Node.new(type: :argument, ast: item)
+        nodes << action_node = Node.new(ast: action)
         edges << Edge.new(nodes: [on_object_node, item_node])
         edges << Edge.new(nodes: [item_node, action_node], color: "orange")
       end
 
       def enumerable(action, collection, iterator_type, item)
-        nodes << collection_node = Node.new(name: AstHelper.new(collection).description)
-        nodes << item_node = Node.new(name: AstHelper.new(item).description, type: :argument)
-        nodes << iterator_node = Node.new(name: iterator_type)
-        nodes << action_node = Node.new(name: AstHelper.new(action).description)
+        nodes << collection_node = Node.new(ast: collection)
+        nodes << item_node = Node.new(ast: item, type: :argument)
+        nodes << iterator_node = Node.new(name: iterator_type, id: AstHelper.new(action).id(description: iterator_type))
+        nodes << action_node = Node.new(ast: action)
         edges << Edge.new(nodes: [collection_node, iterator_node])
         edges << Edge.new(nodes: [iterator_node, item_node], color: "blue")
         edges << Edge.new(nodes: [item_node, action_node], color: "blue")

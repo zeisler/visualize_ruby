@@ -42,7 +42,7 @@ module VisualizeRuby
 
     def build_graphs_by_method(ruby_class)
      ruby_class.defs.map do |meth|
-        Graph.new(ruby_code: meth.body, name: meth.name).uniq_elements!
+        Graph.new(ruby_code: meth.body, name: meth.name)
       end
     end
 

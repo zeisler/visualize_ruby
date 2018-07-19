@@ -140,5 +140,11 @@ RSpec.describe VisualizeRuby::Builder do
         it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/base_method.png") }
       end
     end
+
+    context "glided rose" do
+      let(:ruby_code) {File.read(File.join(File.dirname(__FILE__), "../examples/glided_rose.rb"))}
+
+      it { VisualizeRuby::Graphviz.new(*subject.build).to_graph(path: "spec/examples/glided_rose.png") }
+    end
   end
 end

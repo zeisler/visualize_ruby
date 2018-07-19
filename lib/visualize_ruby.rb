@@ -5,6 +5,7 @@ require "visualize_ruby/edge"
 require "visualize_ruby/graph"
 require "visualize_ruby/builder"
 require "visualize_ruby/graphviz"
+require "visualize_ruby/ast_helper"
 
 module VisualizeRuby
 end

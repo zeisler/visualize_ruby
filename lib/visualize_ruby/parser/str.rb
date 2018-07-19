@@ -3,7 +3,7 @@ module VisualizeRuby
     class Str < Base
       # @return [Array<VisualizeRuby::Node>, Array<VisualizeRuby::Edge>]
       def parse
-        return [Node.new(name: AstHelper.new(@ast).description, type: :action)], []
+        return [Node.new(ast: @ast, type: :action)], []
       end
     end
   end

@@ -1,8 +1,6 @@
 module VisualizeRuby
   class Edge
     attr_reader :name,
-                :node_a,
-                :node_b,
                 :nodes,
                 :dir,
                 :style,
@@ -11,11 +9,17 @@ module VisualizeRuby
     def initialize(name: nil, nodes:, dir: :forward, style: :solid, color: nil)
       @name   = name.to_s if name
       @nodes  = nodes
-      @node_a = nodes[0]
-      @node_b = nodes[1]
       @dir    = dir
       @style  = style
       @color  = color
+    end
+
+    def node_a
+      nodes[0]
+    end
+
+    def node_b
+      nodes[1]
     end
 
     def to_a

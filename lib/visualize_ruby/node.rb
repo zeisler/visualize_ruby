@@ -1,12 +1,14 @@
 module VisualizeRuby
   class Node
-    attr_reader :name, :style
-    attr_accessor :type
+    attr_reader :name, :style, :id
+    attr_accessor :type, :order, :id
 
-    def initialize(name:, type: :action, style: :rounded)
-      @name  = name.to_s
+    def initialize(name: nil, type: :action, style: :rounded, ast: nil, id: nil, order: nil)
+      @name  = name || (ast ? AstHelper.new(ast).description : nil)
       @type  = type
       @style = style
+      @id    = id || (ast ? AstHelper.new(ast).id : nil)
+      @order = order
     end
 
     def to_sym
@@ -36,11 +38,13 @@ module VisualizeRuby
         :ellipse
       when :argument
         :box
+      else
+        :box
       end
     end
 
     def inspect
-      "#<VisualizeRuby::Node #{type_display} #{name}>"
+      "#<VisualizeRuby::Node #{type_display} #{id}>"
     end
 
     def ==(other)
@@ -50,7 +54,7 @@ module VisualizeRuby
     alias_method :eql?, :==
 
     def hash
-      [type, name, style].hash
+      [type, name, style, id].hash
     end
 
     alias_method :to_s, :inspect

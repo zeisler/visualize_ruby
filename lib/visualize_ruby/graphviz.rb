@@ -2,11 +2,12 @@ require "graphviz"
 
 module VisualizeRuby
   class Graphviz
-    attr_reader :graphs, :label
+    attr_reader :graphs, :label, :unique_nodes
 
-    def initialize(graphs, label: nil)
-      @graphs = [*graphs]
-      @label  = label
+    def initialize(graphs, label: nil, unique_nodes: true)
+      @graphs       = [*graphs]
+      @label        = label
+      @unique_nodes = unique_nodes
     end
 
     def to_graph(format: nil, path: nil)
@@ -46,13 +47,21 @@ module VisualizeRuby
       @nodes ||= {}
     end
 
+    def node_id(node)
+      if unique_nodes
+        node.id
+      else
+        node.name
+      end
+    end
+
     def create_edges(sub_graphs)
       sub_graphs.each do |r_graph, g_graph|
         r_graph.edges.each do |edge|
           ::Graphviz::Edge.new(
               g_graph,
-              nodes[edge.node_a.name],
-              nodes[edge.node_b.name],
+              nodes[node_id(edge.node_a)],
+              nodes[node_id(edge.node_b)],
               **compact({ label: edge.name, dir: edge.dir, style: edge.style, color: edge.color })
           )
         end
@@ -68,10 +77,11 @@ module VisualizeRuby
 
     def create_nodes(graph, sub_graph)
       graph.nodes.each do |node|
-        nodes[node.name] = sub_graph.add_node(
-            node.name,
+        nodes[node_id(node)] = sub_graph.add_node(
+            node_id(node),
             shape: node.shape,
-            style: node.style
+            style: node.style,
+            label: node.name
         )
       end
     end

@@ -26,17 +26,17 @@ RSpec.describe VisualizeRuby::Graphviz do
       subgraph "cluster_0" {
         label="hungry?";
         style=dotted;
-        "stomach.empty?"[shape=ellipse, style=rounded];
+        "stomach.empty? L1"[shape=ellipse, style=rounded, label="stomach.empty?"];
       }
       subgraph "cluster_1" {
         label="start";
         style=dotted;
-        "hungry?"[shape=diamond, style=rounded];
-        "eat"[shape=ellipse, style=rounded];
-        "work"[shape=ellipse, style=rounded];
-        "hungry?" -> "eat"[label="true", dir=forward, style=solid];
-        "hungry?" -> "work"[label="false", dir=forward, style=solid];
-        "hungry?" -> "stomach.empty?"[dir=none, style=dashed];
+        "hungry? L1"[shape=diamond, style=rounded, label="hungry?"];
+        "eat L2"[shape=ellipse, style=rounded, label="eat"];
+        "work L4"[shape=ellipse, style=rounded, label="work"];
+        "hungry? L1" -> "eat L2"[label="true", dir=forward, style=solid];
+        "hungry? L1" -> "work L4"[label="false", dir=forward, style=solid];
+        "hungry? L1" -> "stomach.empty? L1"[dir=none, style=dashed];
       }
     }
     DOT

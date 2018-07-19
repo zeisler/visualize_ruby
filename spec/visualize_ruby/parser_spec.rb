@@ -99,8 +99,6 @@ RSpec.describe VisualizeRuby::Parser do
                                         ])
         expect(edges.map(&:to_a)).to eq([
                                             ["hungry?", "OR", "->", "alone?"],
-                                            ["hungry?", "true", "->", "eat"],
-                                            ["hungry?", "false", "->", "sleep"],
                                             ["alone?", "true", "->", "eat"],
                                             ["alone?", "false", "->", "sleep"]
                                         ])
@@ -159,7 +157,7 @@ RSpec.describe VisualizeRuby::Parser do
           RUBY
         }
 
-        it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/complex_logic.png") }
+        it { VisualizeRuby::Graphviz.new(graph, unique_nodes: false).to_graph(path: "spec/examples/complex_logic.png") }
       end
 
       context "with linked actions" do
@@ -176,10 +174,12 @@ RSpec.describe VisualizeRuby::Parser do
           expect(nodes.map(&:to_a)).to eq([
                                               [:decision, "project.done?"],
                                               [:action, "eat(:donuts)"],
-                                              [:action, "clean(:kitchen)"]
+                                              [:action, "clean(:kitchen)"],
+                                              [:branch_leaf, "END"]
                                           ])
           expect(edges.map(&:to_a)).to eq([
                                               ["project.done?", "true", "->", "eat(:donuts)"],
+                                              ["project.done?", "false", "->", "END"],
                                               ["eat(:donuts)", "->", "clean(:kitchen)"]
                                           ])
         end
@@ -200,7 +200,7 @@ RSpec.describe VisualizeRuby::Parser do
           }
 
           it do
-            expect(nodes.count).to eq(2)
+            expect(nodes.count).to eq(3)
             VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/node_#{node}.png")
           end
         end
@@ -327,5 +327,49 @@ RSpec.describe VisualizeRuby::Parser do
       expect(nodes.map(&:to_a)).to eq([[:decision, "@name != \"Aged Brie\""], [:decision, "@name != \"Backstage passes to a TAFKAL80ETC concert\""]])
       expect(edges.map(&:to_a)).to eq([["@name != \"Aged Brie\"", "AND", "->", "@name != \"Backstage passes to a TAFKAL80ETC concert\""]])
     end
+  end
+
+  context "if and else" do
+    let(:ruby_code) {
+      <<-RUBY
+      if 1 == 1 && 2!=3
+        run
+      else
+        walk
+      end
+      RUBY
+    }
+
+    it "converts to nodes and edges" do
+      expect(nodes.map(&:to_a)).to eq([[:decision, "1 == 1"], [:decision, "2 != 3"], [:action, "run"], [:action, "walk"]])
+      expect(edges.map(&:to_a)).to eq([["1 == 1", "AND", "->", "2 != 3"], ["2 != 3", "true", "->", "run"], ["2 != 3", "false", "->", "walk"]])
+    end
+  end
+
+  context "one if after another" do
+    let(:ruby_code) {
+      <<-RUBY
+      if 1 == 1
+        talk
+        if time == now
+          run
+        end
+      else
+        walk
+      end
+      if time > now
+        if 1 == 1
+         jump
+        end
+      end
+      RUBY
+    }
+
+    it "converts to nodes and edges" do
+      expect(edges.map(&:to_a)).to eq([["walk", "->", "time > now"], ["run", "->", "time > now"], ["1 == 1", "true", "->", "talk"], ["1 == 1", "false", "->", "walk"], ["talk", "->", "time == now"], ["time == now", "true", "->", "run"], ["time == now", "false", "->", "time > now"], ["time > now", "true", "->", "1 == 1"], ["time > now", "false", "->", "END"], ["1 == 1", "true", "->", "jump"], ["1 == 1", "false", "->", "END"]])
+      expect(nodes.map(&:to_a)).to eq([[:decision, "1 == 1"], [:action, "talk"], [:decision, "time == now"], [:action, "run"], [:action, "walk"], [:decision, "time > now"], [:decision, "1 == 1"], [:action, "jump"], [:branch_leaf, "END"], [:branch_leaf, "END"]])
+    end
+
+    it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/one if after another.png") }
   end
 end
