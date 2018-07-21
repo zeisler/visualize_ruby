@@ -3,8 +3,9 @@ module VisualizeRuby
     attr_reader :name,
                 :nodes,
                 :dir,
-                :style,
-                :color
+                :style
+
+    attr_accessor :color
 
     def initialize(name: nil, nodes:, dir: :forward, style: :solid, color: nil)
       @name   = name.to_s if name

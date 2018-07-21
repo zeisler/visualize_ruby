@@ -14,7 +14,7 @@ RSpec.describe VisualizeRuby::Builder do
       }
 
       it "returns a graph" do
-        expect(subject.build).to be_an_instance_of(VisualizeRuby::Graph)
+        expect(subject.build.graphs.first).to be_an_instance_of(VisualizeRuby::Graph)
       end
     end
 
@@ -38,7 +38,7 @@ RSpec.describe VisualizeRuby::Builder do
       }
 
       it "returns a graphs" do
-        expect(subject.build.first.map(&:to_hash)).to eq([
+        expect(subject.build.graphs.map(&:to_hash)).to eq([
                                                        {
                                                            name:  "start",
                                                            edges: [
@@ -61,7 +61,7 @@ RSpec.describe VisualizeRuby::Builder do
                                                    ])
       end
 
-      it { VisualizeRuby::Graphviz.new(*subject.build).to_graph(path: "spec/examples/ruby_class.png") }
+      it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/ruby_class.png") }
     end
 
     context "when given naked methods" do
@@ -82,7 +82,7 @@ RSpec.describe VisualizeRuby::Builder do
       }
 
       it "returns a graphs" do
-        expect(subject.build.map(&:to_hash)).to eq([
+        expect(subject.build.graphs.map(&:to_hash)).to eq([
                                                              {
                                                                  name:  "start",
                                                                  edges: [
@@ -121,7 +121,7 @@ RSpec.describe VisualizeRuby::Builder do
         }
 
         it "returns a graphs" do
-          expect(subject.build.map(&:to_hash)).to eq([
+          expect(subject.build.graphs.map(&:to_hash)).to eq([
                                                          {
                                                              name:  "start",
                                                              edges: [
@@ -141,10 +141,10 @@ RSpec.describe VisualizeRuby::Builder do
       end
     end
 
-    context "glided rose" do
-      let(:ruby_code) {File.read(File.join(File.dirname(__FILE__), "../examples/glided_rose.rb"))}
+    context "gilded rose" do
+      let(:ruby_code) {File.read(File.join(File.dirname(__FILE__), "../examples/gilded_rose.rb"))}
 
-      it { VisualizeRuby::Graphviz.new(*subject.build).to_graph(path: "spec/examples/glided_rose.png") }
+      it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/gilded_rose.png") }
     end
   end
 end

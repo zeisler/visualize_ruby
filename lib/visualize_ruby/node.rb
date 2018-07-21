@@ -1,18 +1,17 @@
 module VisualizeRuby
   class Node
-    attr_reader :name, :style, :id
-    attr_accessor :type, :order, :id
+    attr_reader :name, :style, :id, :line
+    attr_accessor :type, :id, :color
+    # When a node is part of an an edge from another graph this will be set.
+    attr_accessor :owned_by_graph
 
-    def initialize(name: nil, type: :action, style: :rounded, ast: nil, id: nil, order: nil)
+    def initialize(name: nil, type: :action, style: :rounded, ast: nil, id: nil, color: nil)
       @name  = name || (ast ? AstHelper.new(ast).description : nil)
       @type  = type
       @style = style
       @id    = id || (ast ? AstHelper.new(ast).id : nil)
-      @order = order
-    end
-
-    def to_sym
-      name.to_s.gsub(" ", "_").to_sym
+      @line  = AstHelper.new(ast).first_line
+      @color = color
     end
 
     def to_a

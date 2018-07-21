@@ -21,7 +21,7 @@ RSpec.describe VisualizeRuby::Parser::Block do
     expect(edges.map(&:to_a)).to eq([["people", "->", "each"], ["each", "->", "person"], ["person", "->", "email(person)"], ["email(person)",  "↺","->", "each"]])
   end
 
-  it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/each.png") }
+  it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/each.png") }
 
   context "map" do
     let(:ruby_code) {
@@ -52,6 +52,6 @@ RSpec.describe VisualizeRuby::Parser::Block do
       expect(edges.map(&:to_a)).to eq([["people.done", "->", "person"], ["person", "->", "email(person)"]])
     end
 
-    it { VisualizeRuby::Graphviz.new(graph).to_graph(path: "spec/examples/block.png") }
+    it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/block.png") }
   end
 end

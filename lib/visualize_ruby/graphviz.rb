@@ -4,9 +4,9 @@ module VisualizeRuby
   class Graphviz
     attr_reader :graphs, :label, :unique_nodes
 
-    def initialize(graphs, label: nil, unique_nodes: true)
-      @graphs       = [*graphs]
-      @label        = label
+    def initialize(builder_result = nil, graphs: nil, label: nil, unique_nodes: true)
+      @graphs       = graphs || builder_result.graphs
+      @label        = builder_result ? builder_result.options[:label] : label
       @unique_nodes = unique_nodes
     end
 
@@ -79,9 +79,12 @@ module VisualizeRuby
       graph.nodes.each do |node|
         nodes[node_id(node)] = sub_graph.add_node(
             node_id(node),
-            shape: node.shape,
-            style: node.style,
-            label: node.name
+            compact({
+                        shape: node.shape,
+                        style: node.style,
+                        label: node.name,
+                        color: node.color
+                    })
         )
       end
     end
