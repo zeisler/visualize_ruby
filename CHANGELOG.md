@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.10.0 - 2018-07-20
+### Enhancement
+* Highlights execution path on flow chart. It using ruby code file or string to build the graph then a file or string of calling code.
+
 ## 0.9.0 - 2018-07-17
 ### Enhancement
 * Properly render Messy code, gilded Rose as example https://github.com/amckinnell/Gilded-Rose-Ruby/blob/master/lib/gilded_rose.rb
