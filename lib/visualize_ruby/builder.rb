@@ -27,7 +27,7 @@ module VisualizeRuby
         Result.new(
             ruby_code: @ruby_code,
             ast:       ruby_code.ast,
-            graphs:    [Graph.new(ast: ruby_code.ast).uniq_elements!]
+            graphs:    [Graph.new(ast: ruby_code.ast)]
         )
       end
     end
