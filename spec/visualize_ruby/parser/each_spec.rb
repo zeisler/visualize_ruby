@@ -3,7 +3,7 @@ RSpec.describe VisualizeRuby::Parser::Block do
     described_class.new(::Parser::CurrentRuby.parse(ruby_code)).parse
   }
   let(:graph) {
-    instance_double(VisualizeRuby::Graph, nodes: nodes, edges: edges, name: "something")
+    instance_double(VisualizeRuby::Graph, nodes: nodes, edges: edges, name: "something", options: {})
   }
   let(:nodes) { subject.first }
   let(:edges) { subject.last }
@@ -53,5 +53,20 @@ RSpec.describe VisualizeRuby::Parser::Block do
     end
 
     it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/block.png") }
+  end
+
+  context "no block args" do
+    let(:ruby_code) {
+      <<-RUBY
+        (0..5).each { puts "Hello!" }
+      RUBY
+    }
+
+    it "converts to nodes and edges" do
+      expect(nodes.map(&:to_a)).to eq([[:action, "0..5"], [:action, "each"], [:action, "puts(\"Hello!\")"]])
+      expect(edges.map(&:to_a)).to eq([["0..5", "->", "each"], ["each", "->", "puts(\"Hello!\")"], ["puts(\"Hello!\")", "↺", "->", "each"]])
+    end
+
+    it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/block_no_args.png") }
   end
 end
