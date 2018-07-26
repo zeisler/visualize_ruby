@@ -7,36 +7,29 @@ module VisualizeRuby
         item                        = arguments.children[0]
         collection, iterator_type   = iterator.to_a
         if enumerable?(collection) || enumerable?(iterator_type)
-          enumerable(action, collection, iterator_type, item)
+          yield_block(action, item, iterator, "blue", true)
         else
-          yield_block(action, item, iterator)
+          yield_block(action, item, iterator, "orange", false)
         end
         return nodes, edges
       end
 
       private
 
-      def yield_block(action, item, on_object)
-        nodes << on_object_node = Node.new(ast: on_object)
-        nodes << item_node = Node.new(type: :argument, ast: item)
-        nodes << action_node = Node.new(ast: action)
-        edges << Edge.new(nodes: [on_object_node, item_node])
-        edges << Edge.new(nodes: [item_node, action_node], color: "orange")
-      end
+      def yield_block(action, item, on_object, color, enumerable)
+        nodes << on_object_node = Node.new(ast: on_object, color: color)
+        nodes << item_node = Node.new(type: :argument, ast: item, color: color) if item
+        nodes << action_node = Node.new(ast: action, color: color)
 
-      def enumerable(action, collection, iterator_type, block_arg)
-        nodes << collection_node = Node.new(ast: collection)
-        nodes << block_arg_node = Node.new(ast: block_arg, type: :argument) if block_arg
-        nodes << iterator_node = Node.new(name: iterator_type, id: AstHelper.new(action).id(description: iterator_type))
-        nodes << action_node = Node.new(ast: action)
-        edges << Edge.new(nodes: [collection_node, iterator_node])
-        if block_arg_node
-          edges << Edge.new(nodes: [iterator_node, block_arg_node], color: "blue")
-          edges << Edge.new(nodes: [block_arg_node, action_node], color: "blue")
+        if item_node
+          edges << Edge.new(nodes: [on_object_node, item_node], color: color)
+          edges << Edge.new(nodes: [item_node, action_node], color: color)
+          action_node.lineno_connection = edges.last
         else
-          edges << Edge.new(nodes: [iterator_node, action_node], color: "blue")
+          edges << Edge.new(nodes: [on_object_node, action_node], color: color)
         end
-        edges << Edge.new(nodes: [action_node, iterator_node], color: "blue", name: "↺")
+
+        edges << Edge.new(nodes: [action_node, on_object_node], color: color, name: "↺") if enumerable
       end
 
       def enumerable?(meth)

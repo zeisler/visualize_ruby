@@ -1,6 +1,6 @@
 # VisualizeRuby
 
-Write a Ruby class and see method interactions. Works with procedural code and bare methods.</span>
+Write a Ruby code and see method interactions on a flow chart. Works with procedural code, bare methods, and Classes.
 This is experimental project and does not support all types of code. 
 If you'd like it to support more types of code please pull request.
 
@@ -21,13 +21,25 @@ And then execute:
 Or install it yourself as:
 
     $ gem install visualize_ruby
+    
+### Install GraphViz
+
+ MacOS
+
+    $ brew install graphviz
+    
+ Linux
+    
+    $ sudo apt-get install graphviz
 
 ## Usage
+
+### Create a graph by statically parsing the code. 
 
 ```ruby
 require "visualize_ruby"
 
-ruby_code = <<-RUBY
+ruby_code = <<~RUBY
   if hungry?
     eat
   else
@@ -36,8 +48,83 @@ ruby_code = <<-RUBY
 RUBY
 
 results = VisualizeRuby::Builder.new(ruby_code: ruby_code).build
-VisualizeRuby::Graphviz.new(*results).to_graph(path: "example.png")
+VisualizeRuby::Graphviz.new(results).to_graph(path: "example.png")
 ```
+[![graph](./spec/examples/base_method.png)](./spec/examples/base_method.png)
+### Add an execution path to graph
+```ruby
+require "visualize_ruby"
+
+ruby_code = <<~RUBY
+  class Worker
+    def initialize(hungry:)
+      @hungry = hungry
+    end
+
+    def next_action
+      if hungry?
+        :eat
+      else
+        :work
+      end
+    end
+
+    def hungry?
+      @hungry
+    end
+  end
+RUBY
+
+calling_code = <<~RUBY
+  Worker.new(hungry: true).next_action
+RUBY
+
+VisualizeRuby.new do |vb|
+  vb.ruby_code = ruby_code # String, IO
+  vb.trace(calling_code)  # String, IO - optional
+  vb.output_path = "runner_trace.png" # file name with media extension.
+end
+```
+[![graph](./spec/examples/runner_trace.png)](./spec/examples/runner_trace.png)
+
+### Visualize Loops
+Adds a count if the node is called more than once.
+
+```ruby
+require "visualize_ruby"
+
+ruby_code = <<~RUBY
+  class Looping
+    def call
+      (0..5).each do
+        paint_town!
+      end
+    end
+
+    def paint_town!
+      "hello"
+    end
+  end
+RUBY
+
+calling_code = <<~RUBY
+  Worker.new(hungry: true).next_action
+RUBY
+
+VisualizeRuby.new do |vb|
+  vb.ruby_code = ruby_code # String, IO
+  vb.trace(calling_code)  # String, IO - optional
+  vb.output_path = "loop.png" # file name with media extension.
+end
+```
+
+[![graph](./spec/examples/highlight_tracer_loop.png)](./spec/examples/highlight_tracer_loop.png)
+
+### Complex unrefactored code example
+[Gilded Rose](https://github.com/amckinnell/Gilded-Rose-Ruby)
+
+[![graph](./spec/examples/gilded_rose.png)](./spec/examples/gilded_rose.png)
+
 
 ## Development
 

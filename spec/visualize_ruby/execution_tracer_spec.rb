@@ -32,7 +32,7 @@ RSpec.describe VisualizeRuby::ExecutionTracer do
 
         it do
           subject.trace
-          expect(subject.executed_lines).to eq([2, 3, 4, 10, 11, 12, 8])
+          expect(subject.executed_events).to eq([{:line=>3, :event=>:line}, {:line=>4, :event=>:line}, {:line=>11, :event=>:line}])
         end
       end
 
@@ -44,8 +44,35 @@ RSpec.describe VisualizeRuby::ExecutionTracer do
 
         it do
           subject.trace
-          expect(subject.executed_lines).to eq([2, 3, 6, 8])
+          expect(subject.executed_events).to eq([{ line: 3, event: :line }, { :line => 6, :event => :line }])
         end
+      end
+    end
+
+    context "calling methods over and over again" do
+      let(:ruby_code) { <<~RUBY
+        class Looping
+          def call
+            5.times do
+              paint_town! 
+            end
+          end
+
+          def paint_town!
+            "hello"
+          end
+        end
+      RUBY
+      }
+
+      let(:calling_code) { <<~RUBY
+        Looping.new.call
+      RUBY
+      }
+
+      it do
+        subject.trace
+        expect(subject.executed_events.map { |e| e[:line] }).to eq([3, 4, 9, 4, 9, 4, 9, 4, 9, 4, 9])
       end
     end
 
@@ -59,7 +86,7 @@ RSpec.describe VisualizeRuby::ExecutionTracer do
 
       it do
         subject.trace
-        expect(subject.executed_lines).to eq([4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 34, 35, 37, 54])
+        expect(subject.executed_events.map { |e| e[:line] }).to eq([5, 6, 7, 11, 12, 13, 14, 34, 35, 37])
       end
     end
   end

@@ -1,17 +1,17 @@
 module VisualizeRuby
   class Node
-    attr_reader :name, :style, :id, :line
-    attr_accessor :type, :id, :color
-    # When a node is part of an an edge from another graph this will be set.
-    attr_accessor :owned_by_graph
+    include Touchable
+    include Optionalable
+    attr_reader :style, :line
+    attr_accessor :type, :id, :lineno_connection
 
-    def initialize(name: nil, type: :action, style: :rounded, ast: nil, id: nil, color: nil)
+    def initialize(name: nil, type: :action, style: :rounded, ast: nil, line: nil, id: nil, **opts)
       @name  = name || (ast ? AstHelper.new(ast).description : nil)
       @type  = type
       @style = style
       @id    = id || (ast ? AstHelper.new(ast).id : nil)
-      @line  = AstHelper.new(ast).first_line
-      @color = color
+      @line  = line || AstHelper.new(ast).first_line
+      post_initialize(opts)
     end
 
     def to_a

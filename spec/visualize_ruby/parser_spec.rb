@@ -3,7 +3,7 @@ RSpec.describe VisualizeRuby::Parser do
     described_class.new(ruby_code).parse
   }
   let(:graph) {
-    instance_double(VisualizeRuby::Graph, nodes: nodes, edges: edges, name: "something")
+    instance_double(VisualizeRuby::Graph, nodes: nodes, edges: edges, name: "something", options: {})
   }
   let(:nodes) { subject.first }
   let(:edges) { subject.last }

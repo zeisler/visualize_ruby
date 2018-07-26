@@ -1,11 +1,17 @@
 module VisualizeRuby
   class Graph
-    attr_reader :name, :nodes, :edges
+    attr_accessor :name, :nodes, :edges
 
-    def initialize(ruby_code: nil, name: nil, ast: nil)
-      @name          = name.to_s if name
-      @nodes, @edges = (ast ? Parser.new(ast: ast) : Parser.new(ruby_code)).parse
-      @ast = ast
+    def initialize(ruby_code: nil, name: nil, ast: nil, **opts)
+      @name              = name.to_s if name
+      @nodes, @edges     = (ast ? Parser.new(ast: ast) : Parser.new(ruby_code)).parse
+      @ast               = ast
+      @graph_viz_options = opts
+    end
+
+    def options(**args)
+      @graph_viz_options.merge!(args)
+      @graph_viz_options
     end
 
     def to_hash

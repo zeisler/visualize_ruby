@@ -17,8 +17,8 @@ RSpec.describe VisualizeRuby::Parser::Block do
   }
 
   it "converts to nodes and edges" do
-    expect(nodes.map(&:to_a)).to eq([[:action, "people"], [:argument, "person"], [:action, "each"], [:action, "email(person)"]])
-    expect(edges.map(&:to_a)).to eq([["people", "->", "each"], ["each", "->", "person"], ["person", "->", "email(person)"], ["email(person)",  "↺","->", "each"]])
+    expect(nodes.map(&:to_a)).to eq([[:action, "people.each"], [:argument, "person"], [:action, "email(person)"]])
+    expect(edges.map(&:to_a)).to eq([["people.each", "->", "person"], ["person", "->", "email(person)"], ["email(person)",  "↺","->", "people.each"]])
   end
 
   it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/each.png") }
@@ -33,8 +33,8 @@ RSpec.describe VisualizeRuby::Parser::Block do
     }
 
     it "converts to nodes and edges" do
-      expect(nodes.map(&:to_a)).to eq([[:action, "people.done"], [:argument, "person"], [:action, "map"], [:action, "email(person)"]])
-      expect(edges.map(&:to_a)).to eq([["people.done", "->", "map"], ["map", "->", "person"], ["person", "->", "email(person)"], ["email(person)", "↺", "->", "map"]])
+      expect(nodes.map(&:to_a)).to eq([[:action, "people.done.map"], [:argument, "person"], [:action, "email(person)"]])
+      expect(edges.map(&:to_a)).to eq([["people.done.map", "->", "person"], ["person", "->", "email(person)"], ["email(person)", "↺", "->", "people.done.map"]])
     end
   end
 
@@ -63,8 +63,8 @@ RSpec.describe VisualizeRuby::Parser::Block do
     }
 
     it "converts to nodes and edges" do
-      expect(nodes.map(&:to_a)).to eq([[:action, "0..5"], [:action, "each"], [:action, "puts(\"Hello!\")"]])
-      expect(edges.map(&:to_a)).to eq([["0..5", "->", "each"], ["each", "->", "puts(\"Hello!\")"], ["puts(\"Hello!\")", "↺", "->", "each"]])
+      expect(nodes.map(&:to_a)).to eq([[:action, "(0..5).each"], [:action, "puts(\"Hello!\")"]])
+      expect(edges.map(&:to_a)).to eq([["(0..5).each", "->", "puts(\"Hello!\")"], ["puts(\"Hello!\")", "↺", "->", "(0..5).each"]])
     end
 
     it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/block_no_args.png") }

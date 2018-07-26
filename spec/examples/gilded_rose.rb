@@ -32,7 +32,7 @@ class GildedRose
       end
     end
     if @name != "Sulfuras, Hand of Ragnaros"
-      @days_remaining = @days_remaining - 1
+      @days_eachremaining = @days_remaining - 1
     end
     if @days_remaining < 0
       if @name != "Aged Brie"

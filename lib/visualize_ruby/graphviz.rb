@@ -58,11 +58,12 @@ module VisualizeRuby
     def create_edges(sub_graphs)
       sub_graphs.each do |r_graph, g_graph|
         r_graph.edges.each do |edge|
+          next unless edge.display == :visual
           ::Graphviz::Edge.new(
               g_graph,
               nodes[node_id(edge.node_a)],
               nodes[node_id(edge.node_b)],
-              **compact({ label: edge.name, dir: edge.dir, style: edge.style, color: edge.color })
+              **compact({ label: edge.name, dir: edge.dir, style: edge.style, **edge.options})
           )
         end
       end
@@ -71,7 +72,7 @@ module VisualizeRuby
     def create_sub_graph(graph, index)
       main_graph.add_subgraph(
           "cluster_#{index}",
-          **compact({ label: graph.name, style: graphs.count == 1 ? :invis : :dotted })
+          **compact({ label: graph.name, style: graphs.count == 1 ? :invis : :dotted, **graph.options })
       )
     end
 
@@ -83,7 +84,7 @@ module VisualizeRuby
                         shape: node.shape,
                         style: node.style,
                         label: node.name,
-                        color: node.color
+                        **node.options
                     })
         )
       end

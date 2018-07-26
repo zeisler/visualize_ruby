@@ -8,6 +8,22 @@ module VisualizeRuby
         edges.concat(condition_edges)
         condition_nodes
       end
+
+      # @return [Array<VisualizeRuby::Node>, Array<VisualizeRuby::Edge>]
+      def parse
+        last_node = nil
+        edges     = []
+        nodes     = @ast.children.reverse.map do |c|
+          node = set_conditions(c).first
+          if last_node
+            edges << Edge.new(name: self.class.name.split("::").last.upcase, nodes: [node, last_node])
+            last_node.lineno_connection = edges.last
+          end
+          last_node = node
+          node
+        end.reverse
+        return nodes, edges
+      end
     end
   end
 end

@@ -1,22 +1,21 @@
 require "tracer"
+require "tempfile"
 
 module VisualizeRuby
   class ExecutionTracer
     TRACE_POINT_OPTIONS = [
-        :line,
-        :call,
-        :return
+        :line
     ]
-    attr_reader :executed_lines
+    attr_reader :executed_events
     # @param [String, File] ruby_code
     # @param [File, String] calling_code
     # @param [Array<Symbol>] trace_point_options
-    def initialize(ruby_code:, calling_code:, trace_point_options: TRACE_POINT_OPTIONS)
+    def initialize(builder = nil, ruby_code: builder.ruby_code, calling_code:, trace_point_options: TRACE_POINT_OPTIONS)
       @ruby_code           = ruby_code
       @calling_code        = calling_code
       @trace_point_options = trace_point_options
       @temp_files          = []
-      @executed_lines      = []
+      @executed_events      = []
     end
 
     def trace
@@ -32,8 +31,10 @@ module VisualizeRuby
     attr_reader :trace_point_options
 
     def tracer
-      @tracer ||= TracePoint.new(*trace_point_options) do |trace_point|
-        executed_lines << trace_point.lineno if trace_point.path == ruby_file.path
+      @tracer ||= TracePoint.new(*trace_point_options) do |tp|
+        if tp.path == ruby_file.path
+          executed_events << { line: tp.lineno, event: tp.event}
+        end
       end
     end
 

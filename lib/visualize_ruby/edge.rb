@@ -1,18 +1,23 @@
 module VisualizeRuby
   class Edge
-    attr_reader :name,
-                :nodes,
+    include Touchable
+    include Optionalable
+    attr_reader :nodes,
                 :dir,
                 :style
 
-    attr_accessor :color
+    attr_accessor :color,
+                  :display
 
-    def initialize(name: nil, nodes:, dir: :forward, style: :solid, color: nil)
-      @name   = name.to_s if name
-      @nodes  = nodes
-      @dir    = dir
-      @style  = style
-      @color  = color
+    def initialize(name: nil, nodes:, dir: :forward, type: :default, display: :visual, **opts)
+      @name    = name.to_s if name
+      @nodes   = nodes
+      @dir     = dir
+      @style   = style
+      @color   = color
+      @type    = type
+      @display = display
+      post_initialize(opts)
     end
 
     def node_a

@@ -1,13 +1,16 @@
 require "dissociated_introspection"
+require "stringio"
+require "tempfile"
 
 module VisualizeRuby
   class Builder
+    # @param [String, IO] ruby_code
     def initialize(ruby_code:)
-      @ruby_code = ruby_code
+      @ruby_code = ruby_code.is_a?(String) ? StringIO.new(ruby_code) : ruby_code
     end
 
     def build
-      ruby_code  = DissociatedIntrospection::RubyCode.build_from_source(@ruby_code)
+      ruby_code  = DissociatedIntrospection::RubyCode.build_from_source(@ruby_code.read)
       ruby_class = DissociatedIntrospection::RubyClass.new(ruby_code)
 
       if ruby_class.class?
@@ -33,17 +36,20 @@ module VisualizeRuby
     end
 
     class Result
-      attr_reader :graphs, :options, :ruby_code, :ast
+      # @return [Array<VisualizeRuby::Graph>]
+      attr_reader :graphs
+      # @return [Hash{Symbol => Object}]
+      attr_reader :options
+      # @return [IO]
+      attr_reader :ruby_code
+      # @return [Parser:AST]
+      attr_reader :ast
 
       def initialize(ruby_code:, graphs:, options: {}, ast:)
         @ruby_code = ruby_code
         @graphs    = graphs
         @options   = options
         @ast       = ast
-      end
-
-      def build
-        self
       end
     end
 
@@ -56,18 +62,32 @@ module VisualizeRuby
         graphs.each do |sub_graph|
           sub_graph.nodes.each do |node|
             if node.name == graph.name
-              sub_graph.edges << Edge.new(
-                  nodes: [node, graph.nodes.first],
-                  dir:   :none,
-                  style: :dashed
+              found = sub_graph.edges.select do |e|
+                e.node_a == node
+              end
+              found.first
+
+              graph_edge = Edge.new(
+                  nodes:   [node, graph.nodes.first],
+                  style:   :dashed, # indicate method call
               )
-              graph.nodes.first.owned_by_graph = graph
+              sub_graph.edges.insert(sub_graph.edges.index(found.first) || -1, graph_edge)
+              found.each do |edge|
+                edge.options(style: :dashed) # indicate method call
+                edge.nodes[0] = graph.nodes.first
+              end
             end
           end
         end
       end
 
       graphs
+    end
+
+    def edge_search(a: nil, b: nil, edges:)
+      edges.select do |e|
+        e.node_a == a || e.node_b == b
+      end
     end
 
     def build_graphs_by_method(ruby_class)

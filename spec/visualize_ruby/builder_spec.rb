@@ -39,26 +39,25 @@ RSpec.describe VisualizeRuby::Builder do
 
       it "returns a graphs" do
         expect(subject.build.graphs.map(&:to_hash)).to eq([
-                                                       {
-                                                           name:  "start",
-                                                           edges: [
-                                                                      ["hungry?", "true", "->", "eat"],
-                                                                      ["hungry?", "false", "->", "work"],
-                                                                      ["hungry?", "-", "stomach.empty?"]
-                                                                  ],
-                                                           nodes: [
-                                                                      [:decision, "hungry?"],
-                                                                      [:action, "eat"],
-                                                                      [:action, "work"]
-                                                                  ]
-                                                       }, {
-                                                           name:  "hungry?",
-                                                           edges: [],
-                                                           nodes: [
-                                                                      [:action,  "stomach.empty?"]
-                                                                  ]
-                                                       }
-                                                   ])
+                                                              {
+                                                                  name:  "start",
+                                                                  edges: [["hungry?", "->", "stomach.empty?"],
+                                                                          ["stomach.empty?", "true", "->", "eat"],
+                                                                          ["stomach.empty?", "false", "->", "work"]],
+
+                                                                  nodes: [
+                                                                             [:decision, "hungry?"],
+                                                                             [:action, "eat"],
+                                                                             [:action, "work"]
+                                                                         ]
+                                                              }, {
+                                                                  name:  "hungry?",
+                                                                  edges: [],
+                                                                  nodes: [
+                                                                             [:action, "stomach.empty?"]
+                                                                         ]
+                                                              }
+                                                          ])
       end
 
       it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/ruby_class.png") }
@@ -83,26 +82,25 @@ RSpec.describe VisualizeRuby::Builder do
 
       it "returns a graphs" do
         expect(subject.build.graphs.map(&:to_hash)).to eq([
-                                                             {
-                                                                 name:  "start",
-                                                                 edges: [
-                                                                            ["hungry?", "true", "->", "eat"],
-                                                                            ["hungry?", "false", "->", "work"],
-                                                                            ["hungry?", "-",  "stomach.empty?"]
-                                                                        ],
-                                                                 nodes: [
-                                                                            [:decision, "hungry?"],
-                                                                            [:action, "eat"],
-                                                                            [:action, "work"]
-                                                                        ]
-                                                             }, {
-                                                                 name:  "hungry?",
-                                                                 edges: [],
-                                                                 nodes: [
-                                                                            [:action,  "stomach.empty?"]
-                                                                        ]
-                                                             }
-                                                         ])
+                                                              {
+                                                                  name:  "start",
+                                                                  edges: [["hungry?", "->", "stomach.empty?"],
+                                                                          ["stomach.empty?", "true", "->", "eat"],
+                                                                          ["stomach.empty?", "false", "->", "work"]],
+
+                                                                  nodes: [
+                                                                             [:decision, "hungry?"],
+                                                                             [:action, "eat"],
+                                                                             [:action, "work"]
+                                                                         ]
+                                                              }, {
+                                                                  name:  "hungry?",
+                                                                  edges: [],
+                                                                  nodes: [
+                                                                             [:action, "stomach.empty?"]
+                                                                         ]
+                                                              }
+                                                          ])
       end
 
       it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/base_methods.png") }
@@ -122,19 +120,19 @@ RSpec.describe VisualizeRuby::Builder do
 
         it "returns a graphs" do
           expect(subject.build.graphs.map(&:to_hash)).to eq([
-                                                         {
-                                                             name:  "start",
-                                                             edges: [
-                                                                        ["hungry?", "true", "->", "eat"],
-                                                                        ["hungry?", "false", "->", "work"],
-                                                                    ],
-                                                             nodes: [
-                                                                        [:decision, "hungry?"],
-                                                                        [:action, "eat"],
-                                                                        [:action, "work"]
-                                                                    ]
-                                                         }
-                                                     ])
+                                                                {
+                                                                    name:  "start",
+                                                                    edges: [
+                                                                               ["hungry?", "true", "->", "eat"],
+                                                                               ["hungry?", "false", "->", "work"],
+                                                                           ],
+                                                                    nodes: [
+                                                                               [:decision, "hungry?"],
+                                                                               [:action, "eat"],
+                                                                               [:action, "work"]
+                                                                           ]
+                                                                }
+                                                            ])
         end
 
         it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/base_method.png") }
@@ -142,7 +140,7 @@ RSpec.describe VisualizeRuby::Builder do
     end
 
     context "gilded rose" do
-      let(:ruby_code) {File.read(File.join(File.dirname(__FILE__), "../examples/gilded_rose.rb"))}
+      let(:ruby_code) { File.read(File.join(File.dirname(__FILE__), "../examples/gilded_rose.rb")) }
 
       it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/gilded_rose.png") }
     end

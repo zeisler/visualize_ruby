@@ -34,9 +34,9 @@ RSpec.describe VisualizeRuby::Graphviz do
         "hungry? L3"[shape=diamond, style=rounded, label="hungry?"];
         "eat L4"[shape=ellipse, style=rounded, label="eat"];
         "work L6"[shape=ellipse, style=rounded, label="work"];
-        "hungry? L3" -> "eat L4"[label="true", dir=forward, style=solid];
-        "hungry? L3" -> "work L6"[label="false", dir=forward, style=solid];
-        "hungry? L3" -> "stomach.empty? L11"[dir=none, style=dashed];
+        "hungry? L3" -> "stomach.empty? L11"[dir=forward, style=dashed];
+        "stomach.empty? L11" -> "eat L4"[label="true", dir=forward, style=dashed];
+        "stomach.empty? L11" -> "work L6"[label="false", dir=forward, style=dashed];
       }
     }
     DOT
