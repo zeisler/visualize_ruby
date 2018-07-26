@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.11.0 - 2018-07-26
+### Enhancement
+* Improved highlights execution path on flow chart. It using ruby code file or string to build the graph then a file or string of calling code.
+* Better display blocks without arguments.
+* Added DSL for graphing and tracing code.
+
 ## 0.10.0 - 2018-07-20
 ### Enhancement
 * Highlights execution path on flow chart. It using ruby code file or string to build the graph then a file or string of calling code.
