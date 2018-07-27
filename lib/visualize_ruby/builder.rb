@@ -4,9 +4,9 @@ require "tempfile"
 
 module VisualizeRuby
   class Builder
-    # @param [String, IO] ruby_code
+    # @param [String] ruby_code
     def initialize(ruby_code:)
-      @ruby_code = ruby_code.is_a?(String) ? StringIO.new(ruby_code) : ruby_code
+      @ruby_code = InputCoercer.new(ruby_code, name: :ruby_code)
     end
 
     def build
@@ -22,13 +22,13 @@ module VisualizeRuby
         )
       elsif bare_methods?(ruby_code)
         Result.new(
-            ruby_code: @ruby_code,
+            ruby_code: @ruby_code.input,
             ast:       ruby_code.ast,
             graphs:    wrap_bare_methods(ruby_code)
         )
       else
         Result.new(
-            ruby_code: @ruby_code,
+            ruby_code: @ruby_code.input,
             ast:       ruby_code.ast,
             graphs:    [Graph.new(ast: ruby_code.ast)]
         )
@@ -40,7 +40,7 @@ module VisualizeRuby
       attr_reader :graphs
       # @return [Hash{Symbol => Object}]
       attr_reader :options
-      # @return [IO]
+      # @return [File]
       attr_reader :ruby_code
       # @return [Parser:AST]
       attr_reader :ast
@@ -68,8 +68,8 @@ module VisualizeRuby
               found.first
 
               graph_edge = Edge.new(
-                  nodes:   [node, graph.nodes.first],
-                  style:   :dashed, # indicate method call
+                  nodes: [node, graph.nodes.first],
+                  style: :dashed, # indicate method call
               )
               sub_graph.edges.insert(sub_graph.edges.index(found.first) || -1, graph_edge)
               found.each do |edge|

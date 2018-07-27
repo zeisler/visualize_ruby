@@ -80,8 +80,8 @@ calling_code = <<~RUBY
 RUBY
 
 VisualizeRuby.new do |vb|
-  vb.ruby_code = ruby_code # String, IO
-  vb.trace(calling_code)  # String, IO - optional
+  vb.ruby_code = ruby_code # String, File, Pathname
+  vb.trace(calling_code)  # String, File, Pathname, Proc - optional
   vb.output_path = "runner_trace.png" # file name with media extension.
 end
 ```
@@ -107,13 +107,11 @@ ruby_code = <<~RUBY
   end
 RUBY
 
-calling_code = <<~RUBY
-  Worker.new(hungry: true).next_action
-RUBY
-
 VisualizeRuby.new do |vb|
-  vb.ruby_code = ruby_code # String, IO
-  vb.trace(calling_code)  # String, IO - optional
+  vb.ruby_code = ruby_code # String, File, Pathname
+  vb.trace do
+    Looping.new.call
+  end
   vb.output_path = "loop.png" # file name with media extension.
 end
 ```

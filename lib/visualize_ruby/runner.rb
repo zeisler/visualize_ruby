@@ -1,19 +1,18 @@
 module VisualizeRuby
   class Runner
-    # @return [String, IO]
+    # @return [String, File, Pathname, Proc]
     attr_accessor :calling_code
-    # @return [String, IO]
+    # @return [String, File, Pathname]
     attr_accessor :ruby_code
     # @return [Symbol, NilClass]
     attr_accessor :output_format
-    # @return [String]
+    # @return [String, Pathname]
     attr_accessor :output_path
-    # @param [String, IO]
-    attr_reader :calling_code
 
-    # @param [String, IO]
-    def trace(calling_code)
-      @calling_code = calling_code
+    # @param [String, File]
+    # @param [Proc]
+    def trace(calling_code = nil, &block)
+      @calling_code = calling_code || block
     end
 
     def run!
