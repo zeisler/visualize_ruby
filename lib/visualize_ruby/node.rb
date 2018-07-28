@@ -6,10 +6,10 @@ module VisualizeRuby
     attr_accessor :type, :id, :lineno_connection
 
     def initialize(name: nil, type: :action, style: :rounded, ast: nil, line: nil, id: nil, **opts)
-      @name  = name || (ast ? AstHelper.new(ast).description : nil)
+      @name  = (name || (ast ? AstHelper.new(ast).description : nil)).inspect
       @type  = type
       @style = style
-      @id    = id || (ast ? AstHelper.new(ast).id : nil)
+      @id    = id || (ast ? AstHelper.new(ast).id : @name)
       @line  = line || AstHelper.new(ast).first_line
       post_initialize(opts)
     end

@@ -52,4 +52,14 @@ RSpec.describe VisualizeRuby::Runner do
       expect(vb.run!).to_not eq(nil)
     end
   end
+
+  it "bankruptcy rule" do
+    VisualizeRuby.new do |vb|
+      vb.ruby_code = Pathname("spec/examples/bankruptcy_rule.rb")
+      vb.trace do
+        BankruptcyRule.new(credit_report: OpenStruct.new(fico: 800), public_records: [OpenStruct.new(bankrutcy: OpenStruct.new(closed_date: Time.now))])
+      end
+      vb.output_path = "spec/examples/bankruptcy_rule.png"
+    end
+  end
 end

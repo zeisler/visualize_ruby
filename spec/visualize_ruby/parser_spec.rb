@@ -372,4 +372,20 @@ RSpec.describe VisualizeRuby::Parser do
 
     it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/one if after another.png") }
   end
+
+  context "3 conditions" do
+    let(:ruby_code) {
+      <<-RUBY
+        true || false || :hello
+      RUBY
+    }
+
+    it "converts to nodes and edges" do
+      expect(nodes.map(&:to_a)).to eq([[:decision, "true"], [:decision, "false"], [:decision, ":hello"]])
+      expect(edges.map(&:to_a)).to eq([["true", "OR", "->", "false"], ["false", "OR", "->", ":hello"]])
+    end
+
+    it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/3_conditions.png") }
+    it { puts VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(format: String) }
+  end
 end
