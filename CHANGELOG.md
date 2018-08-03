@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## Latest changes
+## 0.13.0 - 2018-08-02
 ### Enhancement
 - Major improvements to tracing. Defaults to in-line method calls on self for better visuals.
 - Block arguments are referenced on the edge instead of given separate node.
