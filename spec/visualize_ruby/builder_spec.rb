@@ -1,6 +1,6 @@
 RSpec.describe VisualizeRuby::Builder do
   describe "#build" do
-    subject { described_class.new(ruby_code: ruby_code) }
+    subject { described_class.new(ruby_code: ruby_code, in_line_local_method_calls: false) }
 
     context "parses plain ruby body code" do
       let(:ruby_code) {

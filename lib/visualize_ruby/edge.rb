@@ -1,16 +1,20 @@
 module VisualizeRuby
   class Edge
+    include Namable
+    add_names :label
     include Touchable
     include Optionalable
     attr_reader :nodes,
                 :dir,
-                :style
+                :style,
+                :type,
+                :label
 
     attr_accessor :color,
                   :display
 
     def initialize(name: nil, nodes:, dir: :forward, type: :default, display: :visual, **opts)
-      @name    = name.to_s if name
+      @label   = name.to_s if name
       @nodes   = nodes
       @dir     = dir
       @style   = style
@@ -31,7 +35,7 @@ module VisualizeRuby
     def to_a
       [
           node_a.name.to_s,
-          name,
+          label,
           direction_symbol,
           node_b.name.to_s,
       ].compact

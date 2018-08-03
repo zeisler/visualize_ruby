@@ -1,27 +1,33 @@
 class BankruptcyRule
-  def initialize(public_records:, credit_report:)
-    @public_records = public_records
-    @credit_report  = credit_report
+  def initialize(bankruptcies:, credit_report:)
+    @bankruptcies  = bankruptcies
+    @credit_report = credit_report
   end
 
   def eligible?
-    in_bankruptcy? || recent_bankrutpcy? || old_bankruptcy_and_bad_credit?
+    in_bankruptcy? || recent_bankruptcy? || old_bankruptcy_and_bad_credit?
   end
 
   private
 
-  attr_reader :public_records, :credit_report
+  attr_reader :bankruptcies, :credit_report
 
   def in_bankruptcy?
-    bankruptcies.any?
+    bankruptcies.any? do |bankruptcy|
+      bankruptcy.closed_date.nil?
+    end
   end
 
-  def recent_bankrutpcy?
-    bankruptcies.any? { |bankruptcy| bankruptcy.closed_date > 2.years.ago }
+  def recent_bankruptcy?
+    bankruptcies.any? do |bankruptcy|
+      bankruptcy.closed_date > 2.years.ago
+    end
   end
 
-  def old_bankruptcy_with_good_credit?
-    bankruptcies.any? { |bankruptcy| bankruptcy.closed_date > 3.years.ago } && bad_credit?
+  def old_bankruptcy_and_bad_credit?
+    bankruptcies.any? do |bankruptcy|
+      bankruptcy.closed_date > 3.years.ago
+    end && bad_credit?
   end
 
   def bad_credit?
@@ -30,9 +36,5 @@ class BankruptcyRule
 
   def fico
     credit_report.fico
-  end
-
-  def bankruptcies
-    public_records.select(&:bankruptcy)
   end
 end

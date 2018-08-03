@@ -4,8 +4,8 @@ module VisualizeRuby
       def set_conditions(condition)
         condition_nodes, condition_edges = Parser.new(ast: condition).parse
         condition_nodes.first.type       = :decision
-        nodes.concat(condition_nodes.reverse)
-        edges.concat(condition_edges)
+        nodes.unshift(*condition_nodes)
+        edges.unshift(*condition_edges)
         condition_nodes
       end
 
@@ -21,7 +21,7 @@ module VisualizeRuby
           last_node = node
           node
         end
-        return nodes.reverse, edges
+        return nodes, edges
       end
     end
   end

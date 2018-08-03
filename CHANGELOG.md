@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Latest changes
+### Enhancement
+- Major improvements to tracing. Defaults to in-line method calls on self for better visuals.
+- Block arguments are referenced on the edge instead of given separate node.
+
+## 0.12.0 - 2018-07-27
+### Fix
+* Better handle more than one OR statement.
+* Fixed bug where node id's were returning nil causing malformed graphs.
+
 ## 0.11.0 - 2018-07-26
 ### Enhancement
 * Improved highlights execution path on flow chart. It using ruby code file or string to build the graph then a file or string of calling code.

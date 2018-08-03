@@ -121,7 +121,7 @@ end
 ### Complex unrefactored code example
 [Gilded Rose](https://github.com/amckinnell/Gilded-Rose-Ruby)
 
-[![graph](./spec/examples/gilded_rose.png)](./spec/examples/gilded_rose.png)
+[![graph](./spec/examples/highlight_tracer.png)](./spec/examples/gilded_rose.png)
 
 
 ## Development

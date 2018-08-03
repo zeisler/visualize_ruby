@@ -1,0 +1,32 @@
+digraph G {
+	label="BankruptcyRule";
+	subgraph "cluster_0" {
+		label="eligible?";
+		style=dotted;
+		"bankruptcies.any? L7"[shape=diamond, style=rounded, label="bankruptcies.any? step: 5", color=forestgreen];
+		"bankruptcy.closed_date.nil? L8"[shape=ellipse, style=rounded, label="bankruptcy.closed_date.nil? (called: 2) step: 7, 10", color=forestgreen];
+		"bankruptcies.any? L9"[shape=diamond, style=rounded, label="bankruptcies.any?", color="blue"];
+		"bankruptcy.closed_date > 2.years.ago L10"[shape=ellipse, style=rounded, label="bankruptcy.closed_date > 2.years.ago (called: 2) step: 9, 11", color=forestgreen];
+		"bankruptcies.any? L11"[shape=diamond, style=rounded, label="bankruptcies.any? step: 13", color=forestgreen];
+		"bankruptcy.closed_date > 3.years.ago L12"[shape=ellipse, style=rounded, label="bankruptcy.closed_date > 3.years.ago step: 15", color=forestgreen];
+		"credit_report.fico > 700 L13"[shape=diamond, style=rounded, label="credit_report.fico > 700"];
+		"bankruptcies.any? L7" -> "bankruptcy.closed_date.nil? L8"[label="(arg :bankruptcy) step: 6", dir=forward, color=forestgreen];
+		"bankruptcy.closed_date.nil? L8" -> "bankruptcies.any? L7"[label="↺", dir=forward, color="blue"];
+		"bankruptcies.any? L9" -> "bankruptcy.closed_date > 2.years.ago L10"[label="(arg :bankruptcy)", dir=forward, color="blue"];
+		"bankruptcy.closed_date > 2.years.ago L10" -> "bankruptcies.any? L9"[label="↺", dir=forward, color="blue"];
+		"bankruptcy.closed_date.nil? L8" -> "bankruptcy.closed_date > 2.years.ago L10"[label="OR step: 8", dir=forward, color=forestgreen];
+		"bankruptcies.any? L11" -> "bankruptcy.closed_date > 3.years.ago L12"[label="(arg :bankruptcy) step: 14", dir=forward, color=forestgreen];
+		"bankruptcy.closed_date > 3.years.ago L12" -> "bankruptcies.any? L11"[label="↺", dir=forward, color="blue"];
+		"bankruptcy.closed_date > 3.years.ago L12" -> "credit_report.fico > 700 L13"[label="AND", dir=forward];
+		"bankruptcy.closed_date > 2.years.ago L10" -> "credit_report.fico > 700 L13"[label="OR", dir=forward];
+		"bankruptcy.closed_date > 2.years.ago L10" -> "bankruptcies.any? L11"[label="step: 12", dir=forward, style=dotted, color=forestgreen];
+	}
+	subgraph "cluster_1" {
+		label="initialize";
+		style=dotted;
+		"@bankruptcies = bankruptcies L3"[shape=ellipse, style=rounded, label="@bankruptcies = bankruptcies step: 1", color=forestgreen];
+		"@credit_report = credit_report L4"[shape=ellipse, style=rounded, label="@credit_report = credit_report step: 3", color=forestgreen];
+		"@bankruptcies = bankruptcies L3" -> "@credit_report = credit_report L4"[label="step: 2", dir=forward, color=forestgreen];
+		"@credit_report = credit_report L4" -> "bankruptcies.any? L7"[label="step: 4", dir=forward, style=dotted, color=forestgreen];
+	}
+}

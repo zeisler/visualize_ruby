@@ -17,7 +17,7 @@ RSpec.describe VisualizeRuby::Graphviz do
     RUBY
   }
 
-  let(:build_result) { VisualizeRuby::Builder.new(ruby_code: ruby_code).build }
+  let(:build_result) { VisualizeRuby::Builder.new(ruby_code: ruby_code, in_line_local_method_calls: false).build }
 
   it "create the correct DOT lang" do
     expect(described_class.new(build_result).to_graph(format: String).gsub("\t", "  ")).to eq(<<~DOT)

@@ -386,6 +386,21 @@ RSpec.describe VisualizeRuby::Parser do
     end
 
     it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/3_conditions.png") }
-    it { puts VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(format: String) }
+    it do
+      expect(VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(format: String)).to eq(<<-RUBY)
+digraph G {
+	label="something";
+	subgraph "cluster_0" {
+		label="something";
+		style=invis;
+		true[shape=diamond, style=rounded, label="true"];
+		false[shape=diamond, style=rounded, label="false"];
+		":hello L1"[shape=diamond, style=rounded, label=":hello"];
+		true -> false[label="OR", dir=forward];
+		false -> ":hello L1"[label="OR", dir=forward];
+	}
+}
+      RUBY
+    end
   end
 end

@@ -18,17 +18,8 @@ module VisualizeRuby
 
       def yield_block(action, item, on_object, color, enumerable)
         nodes << on_object_node = Node.new(ast: on_object, color: color)
-        nodes << item_node = Node.new(type: :argument, ast: item, color: color) if item
         nodes << action_node = Node.new(ast: action, color: color)
-
-        if item_node
-          edges << Edge.new(nodes: [on_object_node, item_node], color: color)
-          edges << Edge.new(nodes: [item_node, action_node], color: color)
-          action_node.lineno_connection = edges.last
-        else
-          edges << Edge.new(nodes: [on_object_node, action_node], color: color)
-        end
-
+        edges << Edge.new(nodes: [on_object_node, action_node], name: item, color: color)
         edges << Edge.new(nodes: [action_node, on_object_node], color: color, name: "↺") if enumerable
       end
 

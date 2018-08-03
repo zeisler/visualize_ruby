@@ -25,8 +25,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake",  "~> 12.3", ">= 12.3.1"
   spec.add_development_dependency "rspec", "~> 3.7"
+  spec.add_development_dependency "activesupport", "~> 5.2"
 
   spec.add_runtime_dependency "graphviz", "~> 1.0"
-  spec.add_runtime_dependency "dissociated_introspection", "~> 0.9.1"
+  spec.add_runtime_dependency "dissociated_introspection", "~> 0.12.0"
   spec.add_runtime_dependency "parser", "~> 2.1", ">= 2.5.1.0"
 end

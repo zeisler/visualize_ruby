@@ -5,8 +5,9 @@ require "tempfile"
 module VisualizeRuby
   class Builder
     # @param [String] ruby_code
-    def initialize(ruby_code:)
-      @ruby_code = InputCoercer.new(ruby_code, name: :ruby_code)
+    def initialize(ruby_code:, in_line_local_method_calls: true)
+      @ruby_code                  = InputCoercer.new(ruby_code, name: :ruby_code)
+      @in_line_local_method_calls = in_line_local_method_calls
     end
 
     def build
@@ -14,12 +15,16 @@ module VisualizeRuby
       ruby_class = DissociatedIntrospection::RubyClass.new(ruby_code)
 
       if ruby_class.class?
-        Result.new(
-            ruby_code: ruby_class.ruby_code.source,
-            ast:       ruby_code.ast,
-            graphs:    build_from_class(ruby_class),
-            options:   { label: ruby_class.class_name }
-        )
+        if @in_line_local_method_calls
+          do_in_lining(ruby_class)
+        else
+          Result.new(
+              ruby_code: @ruby_code.input,
+              ast:       ruby_code.ast,
+              graphs:    build_from_class(ruby_class),
+              options:   { label: ruby_class.class_name }
+          )
+        end
       elsif bare_methods?(ruby_code)
         Result.new(
             ruby_code: @ruby_code.input,
@@ -55,13 +60,27 @@ module VisualizeRuby
 
     private
 
+    def do_in_lining(ruby_class)
+      ruby_code_class     = DissociatedIntrospection::RubyCode.build_from_ast(ruby_class.send(:find_class))
+      in_lined_ruby       = DissociatedIntrospection::MethodInLiner.new(ruby_code_class, defs: ruby_class.defs).in_line
+      reparsed_ruby       = DissociatedIntrospection::RubyCode.build_from_source(in_lined_ruby.source)
+      in_lined_ruby_class = DissociatedIntrospection::RubyClass.new(reparsed_ruby)
+
+      Result.new(
+          ruby_code: reparsed_ruby.source,
+          ast:       reparsed_ruby.ast,
+          graphs:    build_from_class(in_lined_ruby_class),
+          options:   { label: ruby_class.class_name }
+      )
+    end
+
     def build_from_class(ruby_class)
       graphs = build_graphs_by_method(ruby_class)
 
       graphs.each do |graph|
         graphs.each do |sub_graph|
           sub_graph.nodes.each do |node|
-            if node.name == graph.name
+            if node.label == graph.name
               found = sub_graph.edges.select do |e|
                 e.node_a == node
               end
@@ -93,9 +112,9 @@ module VisualizeRuby
     def build_graphs_by_method(ruby_class)
       ruby_class.defs.map do |meth|
         Graph.new(
-            ruby_code: meth.body,
+            ruby_code: meth.body.to_s,
             name:      meth.name,
-            ast:       meth.send(:ruby_code).ast.children[2] # method body ast
+            ast:       meth.body.ast
         )
       end
     end

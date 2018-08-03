@@ -1,15 +1,16 @@
 module VisualizeRuby
   class Node
+    include Namable
+    add_names :label
     include Touchable
     include Optionalable
-    attr_reader :style, :line
+    attr_reader :style, :line, :label
     attr_accessor :type, :id, :lineno_connection
-
     def initialize(name: nil, type: :action, style: :rounded, ast: nil, line: nil, id: nil, **opts)
-      @name  = (name || (ast ? AstHelper.new(ast).description : nil)).inspect
+      @label  = name || (ast ? AstHelper.new(ast).description : nil)
       @type  = type
       @style = style
-      @id    = id || (ast ? AstHelper.new(ast).id : @name)
+      @id    = id || (ast ? AstHelper.new(ast).id : @label)
       @line  = line || AstHelper.new(ast).first_line
       post_initialize(opts)
     end
