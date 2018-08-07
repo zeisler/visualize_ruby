@@ -1,5 +1,7 @@
 # VisualizeRuby
 
+![logo](logo.png)
+
 Write a Ruby code and see method interactions on a flow chart. Works with procedural code, bare methods, and Classes.
 This is experimental project and does not support all types of code. 
 If you'd like it to support more types of code please pull request.
