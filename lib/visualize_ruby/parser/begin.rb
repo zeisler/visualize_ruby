@@ -23,7 +23,7 @@ module VisualizeRuby
             edge          = _edges.detect { |e| e.node_b == n }
             edge.nodes[1] = last_node
             nodes.delete(n)
-          else # 1. (-> n) 2. (-> n -> last_node)
+          elsif n.type != :return # 1. (-> n) 2. (-> n -> last_node)
             edges << Edge.new(nodes: [n, last_node])
           end
         end

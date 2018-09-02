@@ -135,7 +135,7 @@ RSpec.describe VisualizeRuby::Builder do
                                                             ])
         end
 
-        it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/base_method.pdf") }
+        it { VisualizeRuby::Graphviz.new(subject.build).to_graph(path: "spec/examples/base_method.png") }
       end
     end
 

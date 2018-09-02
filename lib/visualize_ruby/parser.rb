@@ -12,6 +12,7 @@ require_relative "parser/true"
 require_relative "parser/false"
 require_relative "parser/case"
 require_relative "parser/block"
+require_relative "parser/return"
 
 module VisualizeRuby
   class Parser
