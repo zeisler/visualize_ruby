@@ -17,8 +17,8 @@ RSpec.describe VisualizeRuby::Parser::Block do
   }
 
   it "converts to nodes and edges" do
-    expect(nodes.map(&:to_a)).to eq([[:action, "people.each"], [:argument, "person"], [:action, "email(person)"]])
-    expect(edges.map(&:to_a)).to eq([["people.each", "->", "person"], ["person", "->", "email(person)"], ["email(person)",  "↺","->", "people.each"]])
+    expect(nodes.map(&:to_a)).to eq([[:action, "people.each"], [:action, "email(person)"]])
+    expect(edges.map(&:to_a)).to eq([["people.each", "(arg :person)", "->", "email(person)"], ["email(person)", "↺", "->", "people.each"]])
   end
 
   it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/each.png") }
@@ -33,8 +33,8 @@ RSpec.describe VisualizeRuby::Parser::Block do
     }
 
     it "converts to nodes and edges" do
-      expect(nodes.map(&:to_a)).to eq([[:action, "people.done.map"], [:argument, "person"], [:action, "email(person)"]])
-      expect(edges.map(&:to_a)).to eq([["people.done.map", "->", "person"], ["person", "->", "email(person)"], ["email(person)", "↺", "->", "people.done.map"]])
+      expect(nodes.map(&:to_a)).to eq([[:action, "people.done.map"], [:action, "email(person)"]])
+      expect(edges.map(&:to_a)).to eq([["people.done.map", "(arg :person)", "->", "email(person)"], ["email(person)", "↺", "->", "people.done.map"]])
     end
   end
 
@@ -48,8 +48,8 @@ RSpec.describe VisualizeRuby::Parser::Block do
     }
 
     it "converts to nodes and edges" do
-      expect(nodes.map(&:to_a)).to eq([[:action, "people.done"], [:argument, "person"], [:action, "email(person)"]])
-      expect(edges.map(&:to_a)).to eq([["people.done", "->", "person"], ["person", "->", "email(person)"]])
+      expect(nodes.map(&:to_a)).to eq([[:action, "people.done"], [:action, "email(person)"]])
+      expect(edges.map(&:to_a)).to eq([["people.done", "(arg :person)", "->", "email(person)"]])
     end
 
     it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/block.png") }
