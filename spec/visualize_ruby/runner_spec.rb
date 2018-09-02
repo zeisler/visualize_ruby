@@ -41,16 +41,47 @@ RSpec.describe VisualizeRuby::Runner do
         Worker.new(hungry: true).next_action
       end
       vb.output_format = String
-      expect(vb.run!).to_not eq(nil)
+      expect(vb.run!.output).to be_an_instance_of(String)
     end
   end
 
   it "calling output takes a pathname" do
-    VisualizeRuby.new do |vb|
+    grapher = VisualizeRuby.new do |vb|
       vb.ruby_code     = Pathname("spec/examples/gilded_rose.rb")
       vb.calling_code  = Pathname("spec/examples/gilded_rose.rb")
       vb.output_format = String
-      expect(vb.run!).to_not eq(nil)
+      vb.unique_nodes  = false
+    end
+
+    expect(grapher.output).to be_an_instance_of(String)
+  end
+
+  it "as passed in options" do
+    grapher = VisualizeRuby.new do |vb|
+      vb.options(
+        ruby_code:     Pathname("spec/examples/gilded_rose.rb"),
+        calling_code:  Pathname("spec/examples/gilded_rose.rb"),
+        output_format: String,
+        unique_nodes:  false,
+      )
+    end
+
+    expect(grapher.output).to be_an_instance_of(String)
+  end
+
+  describe "graphs" do
+    it "sends back graph names" do
+      grapher = VisualizeRuby.new do |vb|
+        vb.options(
+          ruby_code:     Pathname("spec/examples/gilded_rose.rb"),
+          calling_code:  Pathname("spec/examples/gilded_rose.rb"),
+          output_format: String,
+          unique_nodes:  false,
+        )
+
+        expect(vb.run!).to_not eq(nil)
+      end
+      expect(grapher.graphs).to eq(%w(GildedRose initialize tick))
     end
   end
 
@@ -74,7 +105,7 @@ RSpec.describe VisualizeRuby::Runner do
 
     it "to string as DOT" do
       vb.output_format = String
-      expect(vb.run!).to eq(File.read("spec/examples/bankruptcy_rule.dot"))
+      expect(vb.run!.output).to eq(File.read("spec/examples/bankruptcy_rule.dot"))
     end
   end
 end
