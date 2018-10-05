@@ -1,6 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.15.1 - 2018-10-05
+### Fix
+* Require Forwardable.
+* Use default temp directory.
+
+## 0.15.0 - 2018-09-02
+### Enhancement
+* return keyword emits a terminal node in the context of a single methods. Side effects are unknown for methods returning back from a call into another method.
+  
+## 0.14.0 - 2018-09-02
+### Enhancement
+* Add parser options `unique_nodes` and `only_graphs`
+
 ## 0.13.0 - 2018-08-02
 ### Enhancement
 - Major improvements to tracing. Defaults to in-line method calls on self for better visuals.
