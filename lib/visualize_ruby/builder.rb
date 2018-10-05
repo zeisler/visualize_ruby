@@ -1,6 +1,5 @@
 require "dissociated_introspection"
-require "stringio"
-require "tempfile"
+require "forwardable"
 
 module VisualizeRuby
   class Builder

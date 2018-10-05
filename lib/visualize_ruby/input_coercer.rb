@@ -1,3 +1,5 @@
+require "tempfile"
+
 module VisualizeRuby
   class InputCoercer
     attr_reader :name, :input
@@ -37,7 +39,7 @@ module VisualizeRuby
 
     def temp_file
       @temp_file ||= begin
-        file = Tempfile.new(%w(calling_code .rb), File.expand_path(File.join(File.dirname(__FILE__), "../../tmp")))
+        file = Tempfile.new(%w(calling_code .rb))
         file.write(input)
         file.rewind
         file

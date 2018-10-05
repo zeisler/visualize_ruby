@@ -1,3 +1,5 @@
+require "active_support/core_ext/hash/compact"
+
 module VisualizeRuby
   class Runner
     # @return [String, File, Pathname, Proc] The code that calls the graphed code.
