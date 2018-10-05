@@ -14,6 +14,7 @@ module VisualizeRuby
     attr_writer :unique_nodes
     # @params [Array<String>, NilClass] When a graph has many sub-graphs only include listed.
     attr_writer :only_graphs
+    attr_writer :normalize_ruby
     # @param [String, File]
     # @param [Proc]
     def trace(calling_code = nil, &block)
@@ -36,10 +37,14 @@ module VisualizeRuby
     end
 
     def in_line_local_method_calls
-      @in_line_local_method_calls ||= traced?
+      if instance_variable_defined?(:@in_line_local_method_calls)
+        @in_line_local_method_calls
+      else
+        traced?
+      end
     end
 
-    def options(opts={})
+    def options(opts = {})
       opts.each do |key, value|
         public_send("#{key}=", value)
       end
@@ -55,7 +60,8 @@ module VisualizeRuby
     def builder
       @builder ||= VisualizeRuby::Builder.new(
         ruby_code:                  ruby_code,
-        in_line_local_method_calls: in_line_local_method_calls
+        in_line_local_method_calls: in_line_local_method_calls,
+        normalize_ruby:             @normalize_ruby
       ).build
     end
 

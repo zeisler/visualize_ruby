@@ -13,7 +13,7 @@ module VisualizeRuby
       def parse
         last_node = nil
         @ast.children.reverse.map do |c|
-          node = set_conditions(c).last
+          node = set_conditions(c).first
           if last_node
             edges << Edge.new(name: self.class.name.split("::").last.upcase, nodes: [node, last_node])
             last_node.lineno_connection = edges.last

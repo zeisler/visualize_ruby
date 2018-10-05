@@ -9,11 +9,7 @@ RSpec.describe VisualizeRuby::Runner do
       end
 
       def next_action
-        if hungry?
-          :eat
-        else
-          :work
-        end
+        hungry? ? :eat : :work
       end
 
       def hungry?
@@ -25,6 +21,23 @@ RSpec.describe VisualizeRuby::Runner do
   calling_code = <<~RUBY
     Worker.new(hungry: true).next_action
   RUBY
+
+  it "normalize_ruby" do
+    VisualizeRuby.new do |vb|
+      vb.ruby_code      = ruby_code
+      vb.output_format  = String
+      vb.normalize_ruby = true
+      expect(vb.run!.send(:builder).ruby_code).to include <<~RUBY
+      def next_action
+        if hungry?
+          :eat
+        else
+          :work
+        end
+      end
+      RUBY
+    end
+  end
 
   it "create a traced graph file" do
     VisualizeRuby.new do |vb|
@@ -96,16 +109,12 @@ RSpec.describe VisualizeRuby::Runner do
           bankruptcies:  [OpenStruct.new(closed_date: 2.years.ago)]
         ).eligible?
       end
+      vb.in_line_local_method_calls = false
     end
 
     it "to file" do
       vb.output_path = "spec/examples/bankruptcy_rule.png"
       vb.run!
-    end
-
-    it "to string as DOT" do
-      vb.output_format = String
-      expect(vb.run!.output).to eq(File.read("spec/examples/bankruptcy_rule.dot"))
     end
   end
 end

@@ -5,8 +5,8 @@ require "tempfile"
 module VisualizeRuby
   class Builder
     # @param [String] ruby_code
-    def initialize(ruby_code:, in_line_local_method_calls: true)
-      @ruby_code                  = InputCoercer.new(ruby_code, name: :ruby_code)
+    def initialize(ruby_code:, in_line_local_method_calls: true, normalize_ruby: false)
+      @ruby_code                  = InputCoercer.new(ruby_code, name: :ruby_code).public_send(normalize_ruby ? :normalize_ruby : :itself)
       @in_line_local_method_calls = in_line_local_method_calls
     end
 

@@ -3,8 +3,8 @@ module VisualizeRuby
     attr_reader :name, :input
 
     def initialize(input, name:)
-      @input = input
-      @name = name
+      @input          = input
+      @name           = name
     end
 
     def to_file
@@ -18,6 +18,10 @@ module VisualizeRuby
                    else
                      raise ArgumentError, "#{name} was given an unknown type #{input.class}"
                    end
+    end
+
+    def normalize_ruby
+      InputCoercer.new(Unparser.unparse(::Parser::CurrentRuby.parse(read)), name: name)
     end
 
     def read
