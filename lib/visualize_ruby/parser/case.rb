@@ -13,10 +13,14 @@ module VisualizeRuby
           nodes.concat(action_nodes)
           edges.concat(action_edges)
         end
-        _else_node = Node.new(ast: _else, type: :action)
-        _else_edge = Edge.new(name: "else", nodes: [condition_node, _else_node])
-        nodes << _else_node
-        edges << _else_edge
+
+        if _else
+          _else_node = Node.new(ast: _else, type: :action)
+          _else_edge = Edge.new(name: "else", nodes: [condition_node, _else_node])
+          nodes << _else_node
+          edges << _else_edge
+        end
+
         return nodes, edges
       end
     end

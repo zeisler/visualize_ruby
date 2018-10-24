@@ -292,6 +292,36 @@ RSpec.describe VisualizeRuby::Parser do
     it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/case_statement.png") }
   end
 
+  context "case statement without else" do
+    let(:ruby_code) {
+      <<-RUBY
+        case @name
+        when "Tom"
+          run
+        when "Sam"
+          hop
+          flop
+        end
+      RUBY
+    }
+
+    it "converts to nodes and edges" do
+      expect(nodes.map(&:to_a)).to eq([
+                                          [:decision, "@name"],
+                                          [:action, "run"],
+                                          [:action, "hop"],
+                                          [:action, "flop"],
+                                      ])
+      expect(edges.map(&:to_a)).to eq([
+                                          ["@name", "\"Tom\"", "->", "run"],
+                                          ["@name", "\"Sam\"", "->", "hop"],
+                                          ["hop", "->", "flop"]
+                                      ])
+    end
+
+    it { VisualizeRuby::Graphviz.new(graphs: [graph]).to_graph(path: "spec/examples/case_statement_without_else.png") }
+  end
+
   context "array" do
     let(:ruby_code) {
       <<-RUBY
