@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.required_ruby_version = ">= 2.1"
+  spec.required_ruby_version = ">= 2.3"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake",  "~> 12.3", ">= 12.3.1"
@@ -29,5 +29,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "graphviz", "~> 1.0"
   spec.add_runtime_dependency "dissociated_introspection", "~> 0.12.0"
-  spec.add_runtime_dependency "parser", "~> 2.1", ">= 2.5.1.0"
+  spec.add_runtime_dependency "parser", ">= 2.3"
 end

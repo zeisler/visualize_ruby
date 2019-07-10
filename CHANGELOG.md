@@ -1,5 +1,9 @@
-# Changelog
 All notable changes to this project will be documented in this file.
+
+## 0.16.0 - 2019-07-10
+### Changed
+* Require at least Ruby version 2.3
+* Set no upper bound on parser gem version.
 
 ## 0.15.1 - 2018-10-05
 ### Fix
