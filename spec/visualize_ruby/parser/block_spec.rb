@@ -19,7 +19,6 @@ RSpec.describe VisualizeRuby::Parser do
   }
 
   it "converts to nodes and edges" do
-    puts edges.map(&:to_a).inspect
     expect(nodes.map(&:to_a)).to eq( [[:decision, "bankruptcies.any?"], [:action, "bankruptcy.closed_date.nil?"], [:decision, "bankruptcies.any?"], [:action, "bankruptcy.closed_date > 2.years.ago"]])
     expect(edges.map(&:to_a)).to eq([["bankruptcies.any?", "(arg :bankruptcy)", "->", "bankruptcy.closed_date.nil?"], ["bankruptcy.closed_date.nil?", "↺", "->", "bankruptcies.any?"], ["bankruptcies.any?", "(arg :bankruptcy)", "->", "bankruptcy.closed_date > 2.years.ago"], ["bankruptcy.closed_date > 2.years.ago", "↺", "->", "bankruptcies.any?"], ["bankruptcy.closed_date.nil?", "OR", "->", "bankruptcy.closed_date > 2.years.ago"]])
   end
