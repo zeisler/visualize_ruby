@@ -6,7 +6,7 @@ Write a Ruby code and see method interactions on a flow chart. Works with proced
 This is experimental project and does not support all types of code. 
 If you'd like it to support more types of code please pull request.
 
-[Demo](https://visualize-ruby.herokuapp.com/)
+[Demo](https://visualize.dustinzeisler.com)
 
 ## Installation
 
