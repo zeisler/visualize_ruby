@@ -1,4 +1,5 @@
 require "parser"
+require "parser/current"
 require "prism"
 require_relative "parser/fragment"
 # Retained for callers that instantiate VisualizeRuby::Parser::Block directly.
