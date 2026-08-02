@@ -92,10 +92,10 @@ module VisualizeRuby
 
     def find_node(line:, graphs: builder.graphs)
       graphs.each do |graph|
-        graph = graph
         node  = graph.nodes.detect { |n| n.line == line }
         return node, graph if node
       end
+      nil
     end
 
     def exe_edge(graph_a, node_a, node_b)

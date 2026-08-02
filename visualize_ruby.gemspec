@@ -20,14 +20,16 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.required_ruby_version = ">= 2.3"
+  # Prism's Parser translation keeps the AST API used by this gem while
+  # accepting current Ruby syntax (including Ruby 4.0).
+  spec.required_ruby_version = ">= 3.1"
 
-  spec.add_development_dependency "bundler", "~> 1.16"
-  spec.add_development_dependency "rake",  "~> 12.3", ">= 12.3.1"
-  spec.add_development_dependency "rspec", "~> 3.7"
-  spec.add_development_dependency "activesupport", "~> 5.2"
+  spec.add_development_dependency "rake", "~> 13.2"
+  spec.add_development_dependency "rspec", "~> 3.13"
+  spec.add_development_dependency "activesupport", "~> 7.2"
 
-  spec.add_runtime_dependency "graphviz", "~> 1.0"
-  spec.add_runtime_dependency "dissociated_introspection", "~> 0.12.0"
-  spec.add_runtime_dependency "parser", ">= 2.3"
+  spec.add_runtime_dependency "graphviz", "~> 1.2"
+  spec.add_runtime_dependency "parser", ">= 3.3", "< 4.0"
+  spec.add_runtime_dependency "prism", ">= 1.6", "< 2.0"
+  spec.add_runtime_dependency "unparser", ">= 0.8", "< 1.0"
 end

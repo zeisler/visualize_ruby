@@ -12,7 +12,7 @@ module VisualizeRuby
       @style = style
       @id    = id || (ast ? AstHelper.new(ast).id : @label)
       @line  = line || AstHelper.new(ast).first_line
-      post_initialize(opts)
+      post_initialize(**opts)
     end
 
     def to_a

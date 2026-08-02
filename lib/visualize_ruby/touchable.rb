@@ -4,7 +4,7 @@ module VisualizeRuby
       self.class.add_names(:touched_display, :step_display)
       @steps   = []
       @touched = 0
-      super if defined? super
+      super(**args) if defined? super
     end
 
     def touch(color, step: nil)

@@ -1,5 +1,18 @@
 All notable changes to this project will be documented in this file.
 
+## 0.17.0 - 2026-08-01
+### Changed
+* Require Ruby 3.1 or newer and add CI coverage through Ruby 4.0.
+* Replace the legacy syntax parser pipeline with Prism's Parser-compatible AST translation.
+* Modernize development and runtime dependencies, including Ruby 3 keyword-argument compatibility.
+
+### Added
+* Visualize Ruby 3.4 implicit `it` blocks, numbered blocks, argument forwarding,
+  endless methods, and `case`/`in` pattern-matching branches.
+* Add structured graph support for `while`, `until`, post-condition loops,
+  `for`, `rescue`/`ensure`, and terminal control-flow statements.
+* Keep valid syntax without a specialized graph rule as an atomic action node.
+
 ## 0.16.0 - 2019-07-10
 ### Changed
 * Require at least Ruby version 2.3

@@ -2,9 +2,18 @@
 
 ![logo](logo.jpg)
 
-Write a Ruby code and see method interactions on a flow chart. Works with procedural code, bare methods, and Classes.
-This is experimental project and does not support all types of code. 
-If you'd like it to support more types of code please pull request.
+Write Ruby code and see method interactions on a flow chart. It works with
+procedural code, bare methods, and classes.
+
+VisualizeRuby supports Ruby 3.1 through Ruby 4.0. Prism accepts current Ruby
+grammar; the graph engine gives structured flow to sequences, logical
+expressions, conditionals, `case`/`in`, blocks, `while`/`until`/`for` loops,
+`rescue`/`ensure`, and terminal statements. Other valid Ruby syntax is kept as
+an atomic action node, so a new expression will not prevent the surrounding
+file from being visualized.
+
+This is static analysis: dynamic dispatch, runtime `eval`, and metaprogramming
+cannot be represented with complete runtime accuracy.
 
 [Demo](https://visualize.dustinzeisler.com)
 
@@ -131,7 +140,7 @@ end
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. Ruby 3.1 or newer and Graphviz are required. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 

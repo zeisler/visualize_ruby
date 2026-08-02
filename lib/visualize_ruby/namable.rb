@@ -7,7 +7,7 @@ module VisualizeRuby
 
     def post_initialize(name_displayer: nil, **args)
       @name_displayer = name_displayer || DEFAULT_DISPLAYER
-      super if defined? super
+      super(**args) if defined? super
     end
 
     def name

@@ -1,5 +1,3 @@
-require "active_support/core_ext/hash/compact"
-
 module VisualizeRuby
   class Runner
     # @return [String, File, Pathname, Proc] The code that calls the graphed code.
@@ -32,7 +30,7 @@ module VisualizeRuby
           graphs:       filter_graphs,
           unique_nodes: unique_nodes,
           only_graphs:  only_graphs,
-        ).to_graph({ path: output_path, format: output_format }.compact)
+        ).to_graph(**{ path: output_path, format: output_format }.compact)
       end
       self
     end

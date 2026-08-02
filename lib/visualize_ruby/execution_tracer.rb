@@ -1,4 +1,3 @@
-require "tracer"
 require "tempfile"
 
 module VisualizeRuby

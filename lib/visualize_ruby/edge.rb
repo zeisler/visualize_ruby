@@ -21,7 +21,7 @@ module VisualizeRuby
       @color   = color
       @type    = type
       @display = display
-      post_initialize(opts)
+      post_initialize(**opts)
     end
 
     def node_a

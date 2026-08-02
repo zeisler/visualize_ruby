@@ -1,3 +1,5 @@
+require "unparser"
+
 module VisualizeRuby
   class AstHelper
     def initialize(ast)
@@ -7,6 +9,8 @@ module VisualizeRuby
     def description
       return @ast unless @ast.respond_to?(:type)
       Unparser.unparse(@ast)
+    rescue Unparser::UnsupportedNodeError
+      @ast.location.expression.source
     end
 
     def id(description: self.description)

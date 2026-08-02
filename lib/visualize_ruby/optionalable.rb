@@ -2,7 +2,7 @@ module VisualizeRuby
   module Optionalable
     def post_initialize(**opts)
       @graph_viz_options = opts
-      super if defined? super
+      super(**opts) if defined? super
     end
 
     def options(args={})

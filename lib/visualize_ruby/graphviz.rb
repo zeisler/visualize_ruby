@@ -70,7 +70,7 @@ module VisualizeRuby
             g_graph,
             nodes[node_id(edge.node_a)],
             nodes[node_id(edge.node_b)],
-            **compact({ label: edge.name, dir: edge.dir, style: edge.style, **edge.options })
+            compact({ label: edge.name, dir: edge.dir, style: edge.style, **edge.options })
           )
         end
       end
@@ -87,7 +87,7 @@ module VisualizeRuby
       graph.nodes.each do |node|
         nodes[node_id(node)] = sub_graph.add_node(
           node_id(node),
-          compact({
+          **compact({
                     shape: node.shape,
                     style: node.style,
                     label: node.name,
@@ -98,7 +98,7 @@ module VisualizeRuby
     end
 
     def main_graph
-      @main_graph ||= ::Graphviz::Graph.new(:G, compact(label: label))
+      @main_graph ||= ::Graphviz::Graph.new(:G, **compact(label: label))
     end
 
     def compact(hash)

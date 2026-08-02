@@ -1,3 +1,5 @@
+require "ostruct"
+require "active_support"
 require "active_support/core_ext/time"
 require "active_support/core_ext/integer/time"
 
